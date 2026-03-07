@@ -98,7 +98,6 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
-  output: 'standalone',
   typescript: {
     // Pre-existing type errors - safe to ignore for deployment
     ignoreBuildErrors: true,
