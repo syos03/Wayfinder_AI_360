@@ -8,10 +8,7 @@ import jwt from 'jsonwebtoken'
 import { connectDB } from '@/lib/db/mongodb'
 import { User as UserModel } from '@/lib/models'
 
-const JWT_SECRET = process.env.JWT_SECRET
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET is not configured. Please set it in your environment variables.')
-}
+// JWT_SECRET is checked at runtime, not module level, to support build without env vars
 
 export interface User {
   id: string
@@ -29,6 +26,12 @@ export interface User {
  */
 export async function getCurrentUser(): Promise<User | null> {
   try {
+    const JWT_SECRET = process.env.JWT_SECRET
+    if (!JWT_SECRET) {
+      console.error('JWT_SECRET is not configured')
+      return null
+    }
+
     // Get token from cookie
     const cookieStore = await cookies()
     const token = cookieStore.get('auth-token')?.value
@@ -38,7 +41,7 @@ export async function getCurrentUser(): Promise<User | null> {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET as string) as { userId: string }
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string }
     
     // Connect to DB and get user
     await connectDB()

@@ -6,11 +6,7 @@
 import mongoose from 'mongoose'
 import type { Mongoose } from 'mongoose'
 
-const MONGODB_URI = process.env.MONGODB_URI || ''
-
-if (!MONGODB_URI) {
-  throw new Error('Please define MONGODB_URI in .env.local')
-}
+// MONGODB_URI is checked at runtime, not module level, to support build without env vars
 
 // Type for cached connection
 interface CachedConnection {
@@ -44,6 +40,11 @@ function isConnected(): boolean {
  * Connect to MongoDB with connection pooling and retry logic
  */
 export async function connectDB(retries = 3): Promise<Mongoose> {
+  const MONGODB_URI = process.env.MONGODB_URI || ''
+  if (!MONGODB_URI) {
+    throw new Error('Please define MONGODB_URI in environment variables')
+  }
+
   cached = getCachedConnection()
   
   // If already connected and ready, return immediately

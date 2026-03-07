@@ -8,10 +8,7 @@ import jwt from 'jsonwebtoken';
 import { connectDB } from '@/lib/db/mongodb';
 import { User } from '@/lib/models';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET is not configured. Please set it in your environment variables.');
-}
+// JWT_SECRET is checked at runtime, not module level, to support build without env vars
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: {
@@ -28,6 +25,11 @@ export interface AuthenticatedRequest extends NextRequest {
  */
 export async function authenticateUser(req: NextRequest): Promise<{ user: any; error?: string }> {
   try {
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      return { user: null, error: 'JWT_SECRET is not configured' };
+    }
+
     // Get token from cookie
     const token = req.cookies.get('auth-token')?.value;
     

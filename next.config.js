@@ -106,9 +106,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
   // Headers for Permissions Policy (allow sensor features for Google Maps)
   async headers() {
     return [
