@@ -67,18 +67,16 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AnalyticsProvider>
-            <HydrationProvider>
-              <WebVitals />
-              <OfflineIndicator />
-              <Toaster position="top-right" richColors closeButton />
-              <BackToTop />
-              <BottomNavWrapper />
-              <div className="relative flex min-h-screen flex-col pb-16 md:pb-0">
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
-            </HydrationProvider>
+            <WebVitals />
+            <OfflineIndicator />
+            <Toaster position="top-right" richColors closeButton />
+            <BackToTop />
+            <BottomNavWrapper />
+            <div className="relative flex min-h-screen flex-col pb-16 md:pb-0">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
           </AnalyticsProvider>
         </ThemeProvider>
       </body>
