@@ -1,0 +1,38 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="#3b82f6"/>
+  
+  <!-- Compass icon -->
+  <circle cx="256" cy="256" r="160" fill="#ffffff" opacity="0.2"/>
+  <circle cx="256" cy="256" r="120" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Compass needle (North) -->
+  <path d="M 256 136 L 276 256 L 256 276 L 236 256 Z" fill="#ef4444"/>
+  
+  <!-- Compass needle (South) -->
+  <path d="M 256 376 L 236 256 L 256 236 L 276 256 Z" fill="#ffffff"/>
+  
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="16" fill="#1e40af"/>
+  
+  <!-- Direction markers -->
+  <text x="256" y="110" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="middle">N</text>
+  <text x="256" y="420" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="middle">S</text>
+  <text x="410" y="270" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="middle">E</text>
+  <text x="102" y="270" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="middle">W</text>
+</svg>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

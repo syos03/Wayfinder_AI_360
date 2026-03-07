@@ -1,0 +1,241 @@
+/**
+ * Theme Examples - CSS Implementation
+ * Copy the desired theme section to globals.css
+ */
+
+/* ============================================
+   THEME 1: NATURE & EARTH
+   ============================================ */
+.nature-theme {
+  --radius: 0.75rem;
+  --background: oklch(0.99 0.005 140);
+  --foreground: oklch(0.15 0.02 140);
+  --primary: oklch(0.55 0.22 140);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.01 140);
+  --accent: oklch(0.96 0.02 120);
+  --accent-foreground: oklch(0.25 0.02 120);
+  --muted: oklch(0.96 0.01 140);
+  --border: oklch(0.9 0.01 140);
+  --gradient-start: oklch(0.55 0.22 140);
+  --gradient-middle: oklch(0.5 0.2 120);
+  --gradient-end: oklch(0.52 0.18 100);
+}
+
+.dark.nature-theme {
+  --background: oklch(0.12 0.01 140);
+  --foreground: oklch(0.98 0.005 140);
+  --primary: oklch(0.65 0.25 140);
+  --secondary: oklch(0.22 0.02 140);
+}
+
+/* ============================================
+   THEME 2: LUXURY PREMIUM
+   ============================================ */
+.luxury-theme {
+  --radius: 0.75rem;
+  --background: oklch(0.99 0.005 60);
+  --foreground: oklch(0.15 0.02 60);
+  --primary: oklch(0.55 0.22 60);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.01 60);
+  --accent: oklch(0.96 0.02 50);
+  --accent-foreground: oklch(0.25 0.02 50);
+  --muted: oklch(0.96 0.01 60);
+  --border: oklch(0.9 0.01 60);
+  --gradient-start: oklch(0.55 0.22 60);
+  --gradient-middle: oklch(0.5 0.2 50);
+  --gradient-end: oklch(0.52 0.18 45);
+}
+
+.dark.luxury-theme {
+  --background: oklch(0.12 0.01 60);
+  --foreground: oklch(0.98 0.005 60);
+  --primary: oklch(0.65 0.25 60);
+  --secondary: oklch(0.22 0.02 60);
+}
+
+/* ============================================
+   THEME 3: VIBRANT ENERGETIC
+   ============================================ */
+.vibrant-theme {
+  --radius: 0.875rem;
+  --background: oklch(0.99 0.005 80);
+  --foreground: oklch(0.15 0.02 340);
+  --primary: oklch(0.55 0.22 40);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.01 340);
+  --accent: oklch(0.96 0.02 320);
+  --accent-foreground: oklch(0.25 0.02 320);
+  --muted: oklch(0.96 0.01 340);
+  --border: oklch(0.9 0.01 340);
+  --gradient-start: oklch(0.55 0.22 40);
+  --gradient-middle: oklch(0.5 0.2 340);
+  --gradient-end: oklch(0.52 0.18 320);
+}
+
+.dark.vibrant-theme {
+  --background: oklch(0.12 0.01 340);
+  --foreground: oklch(0.98 0.005 340);
+  --primary: oklch(0.65 0.25 40);
+  --secondary: oklch(0.22 0.02 340);
+}
+
+/* ============================================
+   THEME 4: RETRO VINTAGE
+   ============================================ */
+.retro-theme {
+  --radius: 0.5rem;
+  --background: oklch(0.99 0.005 80);
+  --foreground: oklch(0.15 0.02 30);
+  --primary: oklch(0.55 0.22 30);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.01 50);
+  --accent: oklch(0.96 0.02 40);
+  --accent-foreground: oklch(0.25 0.02 40);
+  --muted: oklch(0.96 0.01 50);
+  --border: oklch(0.9 0.01 30);
+  --gradient-start: oklch(0.55 0.22 30);
+  --gradient-middle: oklch(0.5 0.2 40);
+  --gradient-end: oklch(0.52 0.18 50);
+}
+
+.dark.retro-theme {
+  --background: oklch(0.12 0.01 30);
+  --foreground: oklch(0.98 0.005 30);
+  --primary: oklch(0.65 0.25 30);
+  --secondary: oklch(0.22 0.02 30);
+}
+
+/* ============================================
+   THEME 5: DARK FUTURISTIC
+   ============================================ */
+.futuristic-theme {
+  --radius: 0.75rem;
+  --background: oklch(0.12 0.01 260);
+  --foreground: oklch(0.98 0.005 260);
+  --primary: oklch(0.65 0.25 260);
+  --primary-foreground: oklch(0.12 0.01 260);
+  --secondary: oklch(0.22 0.02 260);
+  --accent: oklch(0.25 0.02 200);
+  --accent-foreground: oklch(0.95 0.005 200);
+  --muted: oklch(0.22 0.02 260);
+  --border: oklch(0.25 0.02 260);
+  --gradient-start: oklch(0.65 0.25 260);
+  --gradient-middle: oklch(0.6 0.22 200);
+  --gradient-end: oklch(0.62 0.2 180);
+}
+
+/* ============================================
+   UTILITY CLASSES FOR THEMES
+   ============================================ */
+
+/* Premium card with border accent */
+.card-premium {
+  position: relative;
+}
+
+.card-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+/* Vintage card with pattern */
+.card-vintage {
+  position: relative;
+  background-image: 
+    repeating-linear-gradient(
+      45deg, 
+      transparent, 
+      transparent 35px, 
+      rgba(0, 0, 0, 0.05) 35px, 
+      rgba(0, 0, 0, 0.05) 70px
+    );
+}
+
+/* Futuristic card with glow */
+.card-futuristic {
+  position: relative;
+  border: 1px solid var(--primary);
+}
+
+.card-futuristic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.5;
+}
+
+/* Ocean card with wave effect */
+.card-ocean {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-ocean::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
+  animation: wave 3s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-20px, -20px) rotate(180deg);
+  }
+}
+
+/* Vibrant button with pulse */
+.btn-vibrant {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(var(--primary-rgb), 0);
+  }
+}
+
+/* Retro button with shadow */
+.btn-retro {
+  border: 3px solid var(--foreground);
+  box-shadow: 4px 4px 0px var(--foreground);
+  transition: all 0.2s ease;
+}
+
+.btn-retro:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--foreground);
+}
+
+/* Futuristic button with glow */
+.btn-futuristic {
+  box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
+  transition: all 0.3s ease;
+}
+
+.btn-futuristic:hover {
+  box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.8);
+  transform: translateY(-2px);
+}
+
