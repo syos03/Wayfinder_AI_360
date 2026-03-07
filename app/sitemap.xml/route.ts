@@ -6,25 +6,34 @@
 import { connectDB } from '@/lib/db/mongodb';
 import Destination from '@/lib/models/Destination';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://wayfinder.ai';
 
+  // Static pages (always available)
+  const staticPages = [
+    { url: '', priority: '1.0', changefreq: 'daily' },
+    { url: '/explore', priority: '0.9', changefreq: 'daily' },
+    { url: '/discover', priority: '0.8', changefreq: 'daily' },
+    { url: '/community', priority: '0.7', changefreq: 'weekly' },
+  ];
+
+  let destinations: any[] = [];
+
+  // Only fetch from DB if MONGODB_URI is available (not during build)
+  if (process.env.MONGODB_URI) {
+    try {
+      await connectDB();
+      destinations = await Destination.find({ isActive: true })
+        .select('_id updatedAt')
+        .lean();
+    } catch (error) {
+      console.error('Sitemap DB error:', error);
+    }
+  }
+
   try {
-    await connectDB();
-
-    // Get all active destinations
-    const destinations = await Destination.find({ isActive: true })
-      .select('_id updatedAt')
-      .lean();
-
-    // Static pages
-    const staticPages = [
-      { url: '', priority: '1.0', changefreq: 'daily' },
-      { url: '/explore', priority: '0.9', changefreq: 'daily' },
-      { url: '/discover', priority: '0.8', changefreq: 'daily' },
-      { url: '/community', priority: '0.7', changefreq: 'weekly' },
-    ];
-
     // Generate XML
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
