@@ -103,9 +103,6 @@ const nextConfig = {
     // Pre-existing type errors - safe to ignore for deployment
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   // Headers for Permissions Policy (allow sensor features for Google Maps)
   async headers() {
     return [
