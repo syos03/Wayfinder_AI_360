@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -92,18 +92,20 @@ interface TripPlan {
   };
 }
 
-export default function AdminAIPlanDetailPage({ params }: { params: { id: string } }) {
+export default function AdminAIPlanDetailPage() {
   const router = useRouter();
+  const params = useParams();
+  const planId = params.id as string;
   const [plan, setPlan] = useState<TripPlan | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPlan();
-  }, [params.id]);
+  }, [planId]);
 
   const fetchPlan = async () => {
     try {
-      const res = await fetch(`/api/admin/ai-plans/${params.id}`, {
+      const res = await fetch(`/api/admin/ai-plans/${planId}`, {
         credentials: 'include',
       });
       const data = await res.json();
@@ -129,7 +131,7 @@ export default function AdminAIPlanDetailPage({ params }: { params: { id: string
     if (!plan || !confirm(`Xóa kế hoạch "${plan.title}"?`)) return;
 
     toast.promise(
-      fetch(`/api/admin/ai-plans/${params.id}`, {
+      fetch(`/api/admin/ai-plans/${planId}`, {
         method: 'DELETE',
         credentials: 'include',
       }).then(async (res) => {

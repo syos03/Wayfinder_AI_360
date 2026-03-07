@@ -19,7 +19,7 @@ export interface User {
   name: string
   avatar?: string
   bio?: string
-  role?: string
+  role: string
   createdAt: Date
 }
 

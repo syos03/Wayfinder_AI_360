@@ -11,9 +11,10 @@ import TripPlan from '@/lib/models/TripPlan';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,7 +27,7 @@ export async function GET(
 
     await connectDB();
 
-    const plan = await TripPlan.findById(params.id)
+    const plan = await TripPlan.findById(id)
       .populate('userId', 'name email avatar role')
       .populate('destinations', 'name province region type images')
       .lean();
@@ -50,9 +51,10 @@ export async function GET(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -65,7 +67,7 @@ export async function DELETE(
 
     await connectDB();
 
-    const plan = await TripPlan.findByIdAndDelete(params.id);
+    const plan = await TripPlan.findByIdAndDelete(id);
 
     if (!plan) {
       return NextResponse.json({ error: 'Plan not found' }, { status: 404 });

@@ -42,7 +42,7 @@ export async function GET(
       panoramaImages: destination.panoramaImages?.length || 0,
       panoramaHotspots: destination.panoramaHotspots?.length || 0,
     });
-    if (destination.panoramaHotspots?.length > 0) {
+    if ((destination.panoramaHotspots?.length ?? 0) > 0) {
       console.log('🔗 panoramaHotspots data:', JSON.stringify(destination.panoramaHotspots, null, 2));
     }
 
@@ -267,7 +267,7 @@ export async function PATCH(
       streetViewSpots: destination.streetViewSpots?.length,
       panoramaHotspots: destination.panoramaHotspots?.length || 0,
     });
-    if (destination.panoramaHotspots?.length > 0) {
+    if ((destination.panoramaHotspots?.length ?? 0) > 0) {
       console.log('🔗 Saving panoramaHotspots:', JSON.stringify(destination.panoramaHotspots, null, 2));
     }
 
@@ -281,8 +281,8 @@ export async function PATCH(
       streetViewSpots: savedDestination?.streetViewSpots?.length || 0,
       panoramaHotspots: savedDestination?.panoramaHotspots?.length || 0,
     });
-    if (savedDestination?.panoramaHotspots?.length > 0) {
-      console.log('🔗 Returned panoramaHotspots:', JSON.stringify(savedDestination.panoramaHotspots, null, 2));
+    if ((savedDestination?.panoramaHotspots?.length ?? 0) > 0) {
+      console.log('🔗 Returned panoramaHotspots:', JSON.stringify(savedDestination?.panoramaHotspots, null, 2));
     }
 
     return NextResponse.json({

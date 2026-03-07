@@ -81,7 +81,7 @@ export async function sendNewReviewEmail(params: {
     params.unsubscribeToken
   );
 
-  const html = render(
+  const html = await render(
     NewReviewEmail({
       recipientName: params.recipientName,
       reviewerName: params.reviewerName,
@@ -132,7 +132,7 @@ export async function sendNewFollowerEmail(params: {
     params.unsubscribeToken
   );
 
-  const html = render(
+  const html = await render(
     NewFollowerEmail({
       recipientName: params.recipientName,
       followerName: params.followerName,
@@ -177,7 +177,7 @@ export async function sendBadgeEarnedEmail(params: {
     params.unsubscribeToken
   );
 
-  const html = render(
+  const html = await render(
     BadgeEarnedEmail({
       recipientName: params.recipientName,
       badgeName: params.badgeName,

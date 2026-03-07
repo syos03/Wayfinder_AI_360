@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const favorites = userData.favorites || [];
+    const favorites = (userData as any).favorites || [];
 
     return NextResponse.json({
       success: true,

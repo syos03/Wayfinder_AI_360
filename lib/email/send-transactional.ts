@@ -21,7 +21,7 @@ export async function sendWelcomeEmail(
 ): Promise<{ success: boolean; error?: string }> {
   const verifyUrl = `${EMAIL_CONFIG.appUrl}/auth/verify-email?token=${verificationToken}`;
 
-  const html = render(
+  const html = await render(
     WelcomeEmail({
       name,
       verifyUrl,
@@ -47,7 +47,7 @@ export async function sendVerificationEmail(
 ): Promise<{ success: boolean; error?: string }> {
   const verifyUrl = `${EMAIL_CONFIG.appUrl}/auth/verify-email?token=${verificationToken}`;
 
-  const html = render(
+  const html = await render(
     VerifyEmail({
       name,
       verifyUrl,
@@ -73,7 +73,7 @@ export async function sendPasswordResetEmail(
 ): Promise<{ success: boolean; error?: string }> {
   const resetUrl = `${EMAIL_CONFIG.appUrl}/auth/reset-password?token=${resetToken}`;
 
-  const html = render(
+  const html = await render(
     ResetPasswordEmail({
       name,
       resetUrl,
@@ -99,7 +99,7 @@ export async function sendPasswordChangedEmail(
   const changeDate = new Date().toLocaleString('vi-VN');
   const supportUrl = `mailto:${EMAIL_CONFIG.supportEmail}`;
 
-  const html = render(
+  const html = await render(
     PasswordChangedEmail({
       name,
       changeDate,

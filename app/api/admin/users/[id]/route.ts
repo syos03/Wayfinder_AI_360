@@ -17,15 +17,16 @@ import bcrypt from 'bcryptjs';
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const { user, error } = await requireAdmin(req);
   if (error) return error;
 
   try {
     await connectDB();
 
-    const targetUser = await User.findById(params.id)
+    const targetUser = await User.findById(id)
       .select('-passwordHash')
       .populate('bannedBy', 'name email');
 
@@ -56,15 +57,16 @@ export async function GET(
  */
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const { user: adminUser, error } = await requireAdmin(req);
   if (error) return error;
 
   try {
     await connectDB();
 
-    const targetUser = await User.findById(params.id);
+    const targetUser = await User.findById(id);
     if (!targetUser) {
       return NextResponse.json(
         { success: false, error: 'Không tìm thấy người dùng' },
@@ -105,7 +107,7 @@ export async function PATCH(
     }
 
     // Prevent self-ban or self-deactivation
-    if (adminUser.userId === params.id) {
+    if (adminUser.userId === id) {
       if (isBanned === true || isActive === false) {
         return NextResponse.json(
           { success: false, error: 'Bạn không thể tự ban hoặc vô hiệu hóa tài khoản của mình' },
@@ -180,8 +182,9 @@ export async function PATCH(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const { user: adminUser, error } = await requireAdmin(req);
   if (error) return error;
 
@@ -189,14 +192,14 @@ export async function DELETE(
     await connectDB();
 
     // Prevent self-deletion
-    if (adminUser.userId === params.id) {
+    if (adminUser.userId === id) {
       return NextResponse.json(
         { success: false, error: 'Bạn không thể xóa tài khoản của chính mình' },
         { status: 400 }
       );
     }
 
-    const targetUser = await User.findById(params.id);
+    const targetUser = await User.findById(id);
     if (!targetUser) {
       return NextResponse.json(
         { success: false, error: 'Không tìm thấy người dùng' },

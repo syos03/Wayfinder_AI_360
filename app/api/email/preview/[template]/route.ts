@@ -24,7 +24,7 @@ export async function GET(
 
     switch (template) {
       case 'welcome':
-        html = render(
+        html = await render(
           WelcomeEmail({
             name: 'Nguyễn Văn A',
             verifyUrl: 'https://wayfinder.ai/verify?token=abc123',
@@ -33,7 +33,7 @@ export async function GET(
         break;
 
       case 'verify-email':
-        html = render(
+        html = await render(
           VerifyEmail({
             name: 'Nguyễn Văn A',
             verifyUrl: 'https://wayfinder.ai/verify?token=abc123',
@@ -42,7 +42,7 @@ export async function GET(
         break;
 
       case 'reset-password':
-        html = render(
+        html = await render(
           ResetPasswordEmail({
             name: 'Nguyễn Văn A',
             resetUrl: 'https://wayfinder.ai/reset-password?token=xyz789',
@@ -51,7 +51,7 @@ export async function GET(
         break;
 
       case 'password-changed':
-        html = render(
+        html = await render(
           PasswordChangedEmail({
             name: 'Nguyễn Văn A',
             changeDate: new Date().toLocaleString('vi-VN'),
@@ -61,7 +61,7 @@ export async function GET(
         break;
 
       case 'new-review':
-        html = render(
+        html = await render(
           NewReviewEmail({
             recipientName: 'Nguyễn Văn A',
             reviewerName: 'Trần Thị B',
@@ -76,7 +76,7 @@ export async function GET(
         break;
 
       case 'new-follower':
-        html = render(
+        html = await render(
           NewFollowerEmail({
             recipientName: 'Nguyễn Văn A',
             followerName: 'Lê Văn C',
@@ -93,7 +93,7 @@ export async function GET(
         break;
 
       case 'badge-earned':
-        html = render(
+        html = await render(
           BadgeEarnedEmail({
             recipientName: 'Nguyễn Văn A',
             badgeName: 'Nhà Phê Bình',

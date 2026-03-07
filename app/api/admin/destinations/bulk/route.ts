@@ -106,8 +106,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        modified: result.modifiedCount,
-        matched: result.matchedCount,
+        modified: 'modifiedCount' in result ? result.modifiedCount : undefined,
+        matched: 'matchedCount' in result ? result.matchedCount : undefined,
+        deleted: 'deletedCount' in result ? result.deletedCount : undefined,
       },
       message,
     });
