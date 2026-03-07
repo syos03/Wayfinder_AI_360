@@ -100,7 +100,7 @@ interface Destination {
   streetViewUrl?: string;
 }
 
-export default function DestinationDetailPage({ params }: { params: Promise<{ id: string }> }) {
+function DestinationDetailContent({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { user } = useAuth();
   const resolvedParams = use(params);
@@ -590,6 +590,22 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ id
         </div>
       </div>
     </div>
+  );
+}
+
+import { Suspense } from 'react';
+
+export default function DestinationDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-12">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </div>
+    }>
+      <DestinationDetailContent params={params} />
+    </Suspense>
   );
 }
 

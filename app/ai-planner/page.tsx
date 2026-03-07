@@ -26,7 +26,8 @@ interface Destination {
 
 const DRAFT_STORAGE_KEY = 'ai-planner-draft-v1';
 
-export default function AIPlannerPage() {
+// Extract the main content into a separate component so we can wrap it in Suspense
+function AIPlannerContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isAuthenticated, user, isLoading } = useAuth();
@@ -698,6 +699,23 @@ export default function AIPlannerPage() {
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+import { Suspense } from 'react';
+
+export default function AIPlannerPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Đang tải biểu mẫu AI Planner...</p>
+        </div>
+      </div>
+    }>
+      <AIPlannerContent />
+    </Suspense>
   );
 }
 
