@@ -9,7 +9,8 @@ import { Resend } from 'resend';
 const resendApiKey = process.env.RESEND_API_KEY;
 
 if (!resendApiKey) {
-  console.warn('⚠️ RESEND_API_KEY not configured. Emails will not be sent.');
+  // Silent fallback: just don't send emails if key is missing, 
+  // avoiding spam in the server console during build/start
 }
 
 export const resend = new Resend(resendApiKey || 'dummy-key');
