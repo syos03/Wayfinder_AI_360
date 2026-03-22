@@ -57,7 +57,7 @@ export function calculateTrendingScore(destination: {
   views: number;
   clicks: number;
   rating: number;
-  reviewsCount: number;
+  reviewCount: number;
   createdAt: Date;
   recentViews?: number; // views in last 7 days
   recentReviews?: number; // reviews in last 7 days
@@ -182,12 +182,12 @@ export async function getTrendingDestinations(
 
   // Calculate trending scores
   const withScores = destinations.map((dest: IDestination) => {
-    const destId = dest._id.toString();
+    const destId = String(dest._id);
     const trendingScore = calculateTrendingScore({
       views: dest.views || 0,
       clicks: dest.clicks || 0,
       rating: dest.rating || 0,
-      reviewsCount: dest.reviewsCount || 0,
+      reviewCount: dest.reviewCount || 0,
       createdAt: dest.createdAt,
       recentViews: viewsMap[destId] || 0,
       recentReviews: reviewsMap[destId] || 0,

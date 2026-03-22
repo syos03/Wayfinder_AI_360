@@ -1,7 +1,15 @@
-import jwt from 'jsonwebtoken'
+import jwt, { type SignOptions } from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'wayfinder-ai-super-secret-key-2025-hoangviet24'
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d'
+
+function getJwtSecret(): string {
+  const jwtSecret = process.env.JWT_SECRET
+  if (!jwtSecret) {
+    throw new Error('JWT_SECRET is not configured')
+  }
+
+  return jwtSecret
+}
 
 export interface JWTPayload {
   userId: string
@@ -11,16 +19,16 @@ export interface JWTPayload {
 }
 
 export class JWTService {
-  // Generate JWT token
   static generateToken(payload: { userId: string; email: string }): string {
     try {
-      console.log('🔍 Generating JWT token for:', payload)
-      const token = jwt.sign(payload, JWT_SECRET, {
-        expiresIn: JWT_EXPIRES_IN,
+      console.log('Generating JWT token for:', payload)
+      const options: SignOptions = {
+        expiresIn: JWT_EXPIRES_IN as SignOptions['expiresIn'],
         issuer: 'wayfinder-ai',
-        audience: 'wayfinder-users'
-      })
-      console.log('🔍 Generated JWT token:', token.substring(0, 50) + '...')
+        audience: 'wayfinder-users',
+      }
+      const token: string = jwt.sign(payload, getJwtSecret(), options)
+      console.log('Generated JWT token:', token.slice(0, 50) + '...')
       return token
     } catch (error) {
       console.error('Error generating JWT token:', error)
@@ -28,15 +36,14 @@ export class JWTService {
     }
   }
 
-  // Verify JWT token
   static verifyToken(token: string): JWTPayload | null {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET, {
+      const decoded = jwt.verify(token, getJwtSecret(), {
         issuer: 'wayfinder-ai',
-        audience: 'wayfinder-users'
+        audience: 'wayfinder-users',
       }) as JWTPayload
 
-      console.log('🔍 JWT decoded payload:', decoded)
+      console.log('JWT decoded payload:', decoded)
       return decoded
     } catch (error: any) {
       if (error.name === 'TokenExpiredError') {
@@ -50,7 +57,6 @@ export class JWTService {
     }
   }
 
-  // Decode token without verification (for debugging)
   static decodeToken(token: string): JWTPayload | null {
     try {
       return jwt.decode(token) as JWTPayload
@@ -60,7 +66,6 @@ export class JWTService {
     }
   }
 
-  // Check if token is expired
   static isTokenExpired(token: string): boolean {
     try {
       const decoded = this.decodeToken(token)
@@ -68,12 +73,11 @@ export class JWTService {
 
       const currentTime = Math.floor(Date.now() / 1000)
       return decoded.exp < currentTime
-    } catch (error) {
+    } catch {
       return true
     }
   }
 
-  // Refresh token (generate new token with same payload)
   static refreshToken(token: string): string | null {
     try {
       const decoded = this.verifyToken(token)
@@ -81,7 +85,7 @@ export class JWTService {
 
       return this.generateToken({
         userId: decoded.userId,
-        email: decoded.email
+        email: decoded.email,
       })
     } catch (error) {
       console.error('Error refreshing token:', error)
@@ -89,27 +93,25 @@ export class JWTService {
     }
   }
 
-  // Get token expiration time
   static getTokenExpiration(token: string): Date | null {
     try {
       const decoded = this.decodeToken(token)
       if (!decoded || !decoded.exp) return null
 
       return new Date(decoded.exp * 1000)
-    } catch (error) {
+    } catch {
       return null
     }
   }
 }
 
-// Cookie configuration for HTTP-only cookies
 export const COOKIE_CONFIG = {
-  name: 'wayfinder-auth-token',
+  name: 'auth-token',
   options: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-    path: '/'
-  }
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/',
+  },
 }

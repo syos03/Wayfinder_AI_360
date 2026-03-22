@@ -98,10 +98,6 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
-  typescript: {
-    // Pre-existing type errors - safe to ignore for deployment
-    ignoreBuildErrors: true,
-  },
   // Headers for Permissions Policy (allow sensor features for Google Maps)
   async headers() {
     return [
@@ -250,6 +246,58 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.dktcdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.xanhsm.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.xanhsm.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'quangbinhtravel.vn',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.quangbinhtravel.vn',
+      },
+      {
+        protocol: 'https',
+        hostname: 'dulichso.vn',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.dulichso.vn',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ivivu.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.ivivu.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.ivivu.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'klook.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.klook.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.imagekit.io',
       },
     ],
   },

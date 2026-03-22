@@ -140,7 +140,7 @@ export default function SearchBar({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="pl-10 pr-10 h-12 text-base"
+          className="pl-10 pr-10 h-12 text-base transition-all duration-300 focus:ring-primary/20 bg-background border-border"
         />
         {query && (
           <button
@@ -160,7 +160,7 @@ export default function SearchBar({
       {showSuggestions && hasSuggestions && (
         <div
           ref={suggestionsRef}
-          className="absolute z-50 w-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-y-auto"
+          className="absolute z-50 w-full mt-3 bg-card/95 dark:bg-card/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-border overflow-hidden"
         >
           {/* Search Suggestions */}
           {suggestions.suggestions.length > 0 && (
@@ -182,10 +182,10 @@ export default function SearchBar({
                 <button
                   key={idx}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="w-full px-3 py-2 text-left hover:bg-gray-50 rounded flex items-center gap-2 group"
+                  className="w-full px-4 py-3 text-left hover:bg-primary/10 rounded-xl flex items-center gap-3 group transition-all duration-200"
                 >
-                  <Search className="w-4 h-4 text-gray-400 group-hover:text-blue-600" />
-                  <span className="text-gray-700 group-hover:text-blue-600">
+                  <Search className="w-4 h-4 text-muted-foreground group-hover:text-primary" />
+                  <span className="text-foreground/80 group-hover:text-primary font-medium">
                     {suggestion}
                   </span>
                 </button>
@@ -204,20 +204,22 @@ export default function SearchBar({
                 <button
                   key={destination._id}
                   onClick={() => handleDestinationClick(destination._id)}
-                  className="w-full px-3 py-2 text-left hover:bg-gray-50 rounded flex items-center gap-3 group"
+                  className="w-full px-4 py-3 text-left hover:bg-primary/10 rounded-xl flex items-center gap-4 group transition-all duration-200"
                 >
                   {destination.images[0] && (
-                    <img
-                      src={destination.images[0]}
-                      alt={destination.name}
-                      className="w-12 h-12 object-cover rounded"
-                    />
+                    <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
+                      <img
+                        src={destination.images[0]}
+                        alt={destination.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 group-hover:text-blue-600 truncate">
+                    <p className="font-bold text-foreground group-hover:text-primary truncate transition-colors">
                       {destination.name}
                     </p>
-                    <p className="text-sm text-gray-500 truncate">
+                    <p className="text-sm text-muted-foreground truncate opacity-80">
                       {destination.province} • {destination.type}
                     </p>
                   </div>

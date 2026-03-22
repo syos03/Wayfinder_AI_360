@@ -29,34 +29,34 @@ export function EmptyState({
   secondaryAction,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 px-4 text-center fade-in-up">
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center fade-in-up">
       {/* Icon Circle with enhanced gradient */}
-      <div className="relative w-28 h-28 mb-8">
+      <div className="relative w-20 h-20 mb-6">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 rounded-full blur-xl" />
         <div className="relative w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/30 dark:to-primary/10 rounded-full flex items-center justify-center border border-primary/20 float-animation">
-          <Icon className="w-14 h-14 text-primary" />
+          <Icon className="w-10 h-10 text-primary" />
         </div>
       </div>
 
       {/* Text with better typography */}
-      <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
+      <h3 className="text-xl font-bold text-foreground mb-2 tracking-tight">
         {title}
       </h3>
-      <p className="text-muted-foreground mb-10 max-w-md text-lg leading-relaxed">
+      <p className="text-muted-foreground mb-8 max-w-md text-base leading-relaxed">
         {description}
       </p>
 
       {/* Actions with enhanced buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
         {primaryAction && (
-          <Button size="lg" className="btn-gradient" asChild>
+          <Button size="sm" className="btn-gradient" asChild>
             <Link href={primaryAction.href}>
               {primaryAction.label}
             </Link>
           </Button>
         )}
         {secondaryAction && (
-          <Button size="lg" variant="outline" asChild>
+          <Button size="sm" variant="outline" asChild>
             <Link href={secondaryAction.href}>
               {secondaryAction.label}
             </Link>

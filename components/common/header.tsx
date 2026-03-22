@@ -51,10 +51,10 @@ export function Header() {
   if (!hasMounted) {
     return (
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 shadow-sm">
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex items-center space-x-2 group">
-            <Compass className="h-6 w-6 text-primary transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
-            <span className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">
+            <Compass className="h-5 w-5 text-primary transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
+            <span className="font-semibold text-base text-foreground group-hover:text-primary transition-colors duration-300">
               Wayfinder AI
             </span>
           </Link>
@@ -85,11 +85,11 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 shadow-sm">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-14 items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
-          <Compass className="h-6 w-6 text-primary transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
-          <span className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">
+          <Compass className="h-5 w-5 text-primary transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
+          <span className="font-semibold text-base text-foreground group-hover:text-primary transition-colors duration-300">
             Wayfinder AI
           </span>
         </Link>
@@ -116,9 +116,9 @@ export function Header() {
           </Link>
           <Link 
             href="/ai-planner"
-            className="px-3 py-2 text-sm font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+            className="px-2.5 py-1.5 text-xs font-medium transition-all duration-300 rounded-lg bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg hover:-translate-y-0.5"
           >
-            <Sparkles className="inline-block w-4 h-4 mr-1.5" />
+            <Sparkles className="inline-block w-3.5 h-3.5 mr-1" />
             AI Planner
           </Link>
         </nav>
@@ -144,10 +144,10 @@ export function Header() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                    <Avatar className="h-9 w-9 border border-border">
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8 border border-border">
                       <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback className="bg-primary text-primary-foreground font-medium">
+                      <AvatarFallback className="bg-primary text-primary-foreground font-medium text-xs">
                         {user.name.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>

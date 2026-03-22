@@ -15,6 +15,11 @@ interface TrendsChartsProps {
   popularInterests: Array<{ _id: string; count: number }>;
 }
 
+function pieLabel({ name, percent }: { name?: string; percent?: number }) {
+  const ratio = typeof percent === 'number' ? percent : 0;
+  return `${name || 'Khác'} (${(ratio * 100).toFixed(0)}%)`;
+}
+
 export default function TrendsCharts({ budgetTrends, travelStyles, popularInterests }: TrendsChartsProps) {
   // Budget data
   const budgetData = budgetTrends.map((item) => ({
@@ -47,7 +52,7 @@ export default function TrendsCharts({ budgetTrends, travelStyles, popularIntere
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                label={pieLabel}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
@@ -77,7 +82,7 @@ export default function TrendsCharts({ budgetTrends, travelStyles, popularIntere
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                label={pieLabel}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
@@ -107,7 +112,7 @@ export default function TrendsCharts({ budgetTrends, travelStyles, popularIntere
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                label={pieLabel}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"

@@ -13,7 +13,7 @@ export function AISection() {
   return (
     <>
       {/* Asymmetric Split Section - AI Features */}
-      <section className="relative py-32 px-6 overflow-hidden">
+      <section className="relative py-12 px-6 overflow-hidden">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left: Visual with Icons */}
@@ -22,11 +22,23 @@ export function AISection() {
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={slideInLeft}
-              className="relative h-[500px]"
+              className="relative h-[350px]"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-3xl" />
+              {/* Dynamic Animated Background Blob */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 90, 180, 270, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-[40%] blur-3xl"
+              />
               <div className="relative h-full flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-4 w-full max-w-md">
+                <div className="grid grid-cols-3 gap-6 w-full max-w-md relative z-10">
                   {[
                     { icon: Brain, color: "from-blue-500 to-cyan-500" },
                     { icon: Zap, color: "from-purple-500 to-pink-500" },
@@ -40,11 +52,11 @@ export function AISection() {
                       initial={{ opacity: 0, scale: 0 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="aspect-square bg-gradient-to-br p-6 rounded-2xl shadow-lg cursor-pointer"
+                      transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
+                      whileHover={{ scale: 1.15, rotate: 8, zIndex: 20 }}
+                      className={`aspect-square bg-gradient-to-br ${item.color} p-6 rounded-3xl shadow-2xl cursor-pointer flex items-center justify-center border-4 border-white/20 backdrop-blur-sm`}
                     >
-                      <item.icon className="w-full h-full text-white" />
+                      <item.icon className="w-full h-full text-white drop-shadow-xl" />
                     </motion.div>
                   ))}
                 </div>
@@ -63,10 +75,10 @@ export function AISection() {
                 <Brain className="w-4 h-4 mr-2" />
                 AI Technology
               </Badge>
-              <h2 className="text-5xl md:text-6xl font-bold leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold leading-tight">
                 Trí tuệ nhân tạo <span className="gradient-text-animated">thông minh</span>
               </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed">
                 Powered by Google Gemini AI - Tạo kế hoạch du lịch hoàn hảo với phân tích sâu và gợi ý thông minh
                 trong vài giây.
               </p>
@@ -97,7 +109,7 @@ export function AISection() {
       </section>
 
       {/* Creative Journey Timeline */}
-      <section className="relative py-32 px-6 bg-muted/30">
+      <section className="relative py-12 px-6 bg-muted/30 overflow-hidden">
         <div className="container mx-auto">
           <motion.div
             initial="hidden"
@@ -118,12 +130,23 @@ export function AISection() {
                 Đơn giản & Nhanh chóng
               </Badge>
             </motion.div>
-            <motion.h2 variants={fadeInUp} className="text-5xl md:text-6xl font-bold mb-6">
+            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-4">
               Chỉ <span className="gradient-text-animated">3 bước</span> đơn giản
             </motion.h2>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto relative">
+            {/* Desktop Timeline Connector */}
+            <div className="hidden md:block absolute left-[50%] top-0 bottom-0 w-1 bg-gradient-to-b from-primary/20 via-primary/40 to-primary/20 -translate-x-1/2 rounded-full overflow-hidden">
+               <motion.div 
+                className="w-full h-full bg-primary"
+                initial={{ y: "-100%" }}
+                whileInView={{ y: "100%" }}
+                viewport={{ once: false }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+               />
+            </div>
+
             {[
               {
                 step: "01",
@@ -153,31 +176,32 @@ export function AISection() {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
                 variants={index % 2 === 0 ? slideInLeft : slideInRight}
-                className={`flex flex-col md:flex-row items-center gap-8 mb-16 last:mb-0 ${
+                className={`flex flex-col md:flex-row items-center gap-12 mb-24 last:mb-0 relative z-10 ${
                   index % 2 === 1 ? "md:flex-row-reverse" : ""
                 }`}
               >
-                <div className="flex-1">
-                  <Card className="card-premium-hover h-full">
-                    <CardHeader>
-                      <div className="flex items-start gap-6">
+                <div className="flex-1 w-full text-center md:text-left">
+                  <Card className="card-premium-hover h-full bg-white/50 dark:bg-card/50 backdrop-blur-sm border-primary/10 shadow-xl overflow-hidden group">
+                    <CardHeader className="p-4 md:p-6">
+                      <div className={`flex flex-col md:flex-row items-center md:items-start gap-6 ${index % 2 === 1 ? "md:flex-row-reverse" : ""}`}>
                         <div
-                          className={`w-20 h-20 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-xl flex-shrink-0`}
+                          className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-2xl flex-shrink-0 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 border-4 border-white/30 dark:border-white/10`}
                         >
-                          <item.icon className="w-10 h-10 text-white" />
+                          <item.icon className="w-8 h-8 text-white drop-shadow-lg" />
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <span className="text-3xl font-bold text-primary">{item.step}</span>
-                            <CardTitle className="text-2xl">{item.title}</CardTitle>
+                        <div className="flex-1 space-y-2">
+                          <div className={`flex items-center gap-3 justify-center md:justify-start ${index % 2 === 1 ? "md:flex-row-reverse" : ""}`}>
+                            <span className="text-2xl font-black text-primary/30 tracking-tighter italic">#{item.step}</span>
+                            <CardTitle className="text-xl font-bold tracking-tight">{item.title}</CardTitle>
                           </div>
-                          <CardDescription className="text-lg">{item.description}</CardDescription>
+                          <CardDescription className="text-base leading-relaxed text-muted-foreground/80">{item.description}</CardDescription>
                         </div>
                       </div>
                     </CardHeader>
                   </Card>
                 </div>
-                <div className="w-1 h-24 bg-gradient-to-b from-primary to-primary/50 md:hidden" />
+                {/* Mobile Spacing for the line */}
+                <div className="w-1 h-12 bg-gradient-to-b from-primary to-transparent md:hidden" />
               </motion.div>
             ))}
           </div>
@@ -199,7 +223,7 @@ export function AISection() {
       </section>
 
       {/* Creative Features Grid - Asymmetric */}
-      <section className="relative py-32 px-6 overflow-hidden">
+      <section className="relative py-12 px-6 overflow-hidden">
         <div className="container mx-auto">
           <motion.div
             initial="hidden"
@@ -220,7 +244,7 @@ export function AISection() {
                 Tính năng nổi bật
               </Badge>
             </motion.div>
-            <motion.h2 variants={fadeInUp} className="text-5xl md:text-6xl font-bold mb-6">
+            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold mb-4">
               Mọi thứ bạn cần
             </motion.h2>
           </motion.div>

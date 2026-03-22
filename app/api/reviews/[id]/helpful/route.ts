@@ -9,7 +9,6 @@ import Review from '@/lib/models/Review'
 import { getCurrentUser } from '@/lib/auth/server-auth'
 import mongoose from 'mongoose'
 
-// POST /api/reviews/[id]/helpful
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -18,7 +17,6 @@ export async function POST(
     await connectDB()
     const { id } = await params
 
-    // Check authentication
     const user = await getCurrentUser()
     if (!user) {
       return NextResponse.json(
@@ -28,7 +26,7 @@ export async function POST(
     }
 
     const body = await req.json()
-    const { isHelpful } = body // true for helpful, false for not helpful
+    const { isHelpful } = body
 
     if (isHelpful === undefined) {
       return NextResponse.json(
@@ -38,7 +36,6 @@ export async function POST(
     }
 
     const review = await Review.findById(id)
-
     if (!review) {
       return NextResponse.json(
         { success: false, error: 'Không tìm thấy đánh giá' },
@@ -46,7 +43,6 @@ export async function POST(
       )
     }
 
-    // Check if user is the review owner
     if (review.userId.toString() === user.id) {
       return NextResponse.json(
         { success: false, error: 'Bạn không thể vote cho đánh giá của chính mình' },
@@ -57,42 +53,41 @@ export async function POST(
     const userId = user.id
     const userObjectId = new mongoose.Types.ObjectId(userId)
 
-    // Remove from opposite array if exists
     if (isHelpful) {
-      // Voting helpful
-      const notHelpfulIndex = review.notHelpfulBy.findIndex(id => id.toString() === userId)
+      const notHelpfulIndex = review.notHelpfulBy.findIndex(
+        (entry: mongoose.Types.ObjectId) => entry.toString() === userId
+      )
       if (notHelpfulIndex > -1) {
         review.notHelpfulBy.splice(notHelpfulIndex, 1)
         review.notHelpful = Math.max(0, review.notHelpful - 1)
       }
 
-      // Toggle helpful
-      const helpfulIndex = review.helpfulBy.findIndex(id => id.toString() === userId)
+      const helpfulIndex = review.helpfulBy.findIndex(
+        (entry: mongoose.Types.ObjectId) => entry.toString() === userId
+      )
       if (helpfulIndex > -1) {
-        // Already voted helpful, remove vote
         review.helpfulBy.splice(helpfulIndex, 1)
         review.helpful = Math.max(0, review.helpful - 1)
       } else {
-        // Add helpful vote
         review.helpfulBy.push(userObjectId)
         review.helpful += 1
       }
     } else {
-      // Voting not helpful
-      const helpfulIndex = review.helpfulBy.findIndex(id => id.toString() === userId)
+      const helpfulIndex = review.helpfulBy.findIndex(
+        (entry: mongoose.Types.ObjectId) => entry.toString() === userId
+      )
       if (helpfulIndex > -1) {
         review.helpfulBy.splice(helpfulIndex, 1)
         review.helpful = Math.max(0, review.helpful - 1)
       }
 
-      // Toggle not helpful
-      const notHelpfulIndex = review.notHelpfulBy.findIndex(id => id.toString() === userId)
+      const notHelpfulIndex = review.notHelpfulBy.findIndex(
+        (entry: mongoose.Types.ObjectId) => entry.toString() === userId
+      )
       if (notHelpfulIndex > -1) {
-        // Already voted not helpful, remove vote
         review.notHelpfulBy.splice(notHelpfulIndex, 1)
         review.notHelpful = Math.max(0, review.notHelpful - 1)
       } else {
-        // Add not helpful vote
         review.notHelpfulBy.push(userObjectId)
         review.notHelpful += 1
       }
@@ -116,5 +111,3 @@ export async function POST(
     )
   }
 }
-
-

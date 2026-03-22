@@ -9,22 +9,23 @@ import { fadeInUp } from "@/lib/ui/animations";
 
 export function FinalCTA() {
   return (
-    <section className="relative py-32 px-6 overflow-hidden">
+    <section className="relative py-24 px-6 overflow-hidden">
       <div className="relative max-w-7xl mx-auto rounded-3xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/80" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/95 to-indigo-900" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 mix-blend-overlay" />
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={{
-            hidden: { opacity: 0 },
+            hidden: { opacity: 0, y: 30 },
             visible: {
               opacity: 1,
-              transition: { staggerChildren: 0.2 },
+              y: 0,
+              transition: { staggerChildren: 0.15, duration: 0.8 },
             },
           }}
-          className="relative z-10 text-center py-20 px-6"
+          className="relative z-10 text-center py-24 px-8"
         >
           <motion.div variants={fadeInUp}>
             <Badge className="mb-6 bg-white/20 text-white border-white/30 backdrop-blur-sm">
@@ -64,7 +65,7 @@ export function FinalCTA() {
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-primary text-base px-10 backdrop-blur-sm"
+              className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary text-base px-10 backdrop-blur-sm shadow-lg"
               asChild
             >
               <Link href="/explore">Khám phá ngay</Link>

@@ -34,7 +34,6 @@ export const initPostHog = () => {
       disable_session_recording: false,
       session_recording: {
         maskAllInputs: true, // Mask all input fields for privacy
-        maskAllText: false, // Show text (adjust if needed)
         recordCrossOriginIframes: false,
       },
       

@@ -108,7 +108,7 @@ export default function AdvancedFilters({
           <Filter className="w-4 h-4" />
           Bộ lọc
           {activeCount > 0 && (
-            <Badge className="ml-1 bg-blue-600 text-white">
+            <Badge className="ml-1 bg-primary text-primary-foreground shadow-sm">
               {activeCount}
             </Badge>
           )}
@@ -138,7 +138,7 @@ export default function AdvancedFilters({
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="bg-white border rounded-lg p-4 space-y-4">
+        <div className="bg-card/90 dark:bg-card/80 backdrop-blur-xl border border-border rounded-2xl p-6 space-y-6 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
           {/* Region Filter */}
           <div className="space-y-2">
             <label className="text-sm font-medium flex items-center gap-2">

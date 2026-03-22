@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import SafeImage from '@/components/common/SafeImage';
 import { MapPin, Star, TrendingUp, Flame, ChevronRight } from 'lucide-react';
 
 interface Destination {
@@ -57,11 +58,10 @@ export default function TrendingSection({
     }
   };
 
-  const getTrendingBadgeColor = (score: number) => {
-    if (score >= 80) return 'bg-red-500';
-    if (score >= 60) return 'bg-orange-500';
-    if (score >= 40) return 'bg-yellow-500';
-    return 'bg-gray-500';
+  const getTrendingColor = (score: number) => {
+    if (score >= 85) return 'text-red-500';
+    if (score >= 70) return 'text-orange-500';
+    return 'text-amber-500';
   };
 
   if (loading) {
@@ -69,16 +69,16 @@ export default function TrendingSection({
       <div className="space-y-6">
         {showHeader && (
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Flame className="w-6 h-6 text-orange-500" />
+            <h2 className="text-lg font-bold flex items-center gap-2">
+              <Flame className="w-5 h-5 text-orange-500" />
               Điểm đến đang Hot
             </h2>
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i} className="overflow-hidden animate-pulse">
-              <div className="h-56 bg-gray-200" />
+              <div className="h-40 bg-gray-200" />
               <CardContent className="p-4">
                 <div className="h-6 bg-gray-200 rounded mb-2" />
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
@@ -103,10 +103,10 @@ export default function TrendingSection({
     <div className="space-y-6">
       {showHeader && (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Flame className="w-6 h-6 text-orange-500" />
+          <h2 className="text-lg font-bold flex items-center gap-2">
+            <Flame className="w-5 h-5 text-orange-500" />
             Điểm đến đang Hot
-            <span className="text-sm font-normal text-gray-500">
+            <span className="text-xs font-normal text-gray-500">
               ({destinations.length} địa điểm)
             </span>
           </h2>
@@ -137,28 +137,35 @@ export default function TrendingSection({
           <Link key={dest._id} href={`/destinations/${dest._id}`}>
             <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group h-full">
               {/* Image */}
-              <div className="relative h-56 overflow-hidden">
-                <img
+              <div className="relative h-48 overflow-hidden">
+                <SafeImage
                   src={dest.images[0] || '/placeholder-destination.jpg'}
                   alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
 
-                {/* Trending Badge */}
+                {/* Trending Indicator */}
                 {dest.trendingScore && (
-                  <div
-                    className={`absolute top-3 right-3 ${getTrendingBadgeColor(
-                      dest.trendingScore
-                    )} text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg`}
-                  >
-                    <Flame className="w-3 h-3" />
-                    {dest.trendingScore}
+                  <div className="absolute top-3 right-3 z-10">
+                    <div className="bg-black/60 backdrop-blur-md text-white px-2 py-1 rounded-lg flex items-center gap-1.5 border border-white/10">
+                      <Flame className={`w-3.5 h-3.5 fill-current ${getTrendingColor(dest.trendingScore)}`} />
+                      <span className="text-[11px] font-bold tracking-tighter">{dest.trendingScore}%</span>
+                    </div>
                   </div>
                 )}
 
                 {/* Rank Badge */}
-                <div className="absolute top-3 left-3 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-bold">
-                  #{index + 1}
+                <div className="absolute top-3 left-3 z-10">
+                  <div className={`
+                    w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm shadow-xl border border-white/20
+                    ${index === 0 ? 'bg-gradient-to-br from-yellow-400 to-amber-600 text-white' : 
+                      index === 1 ? 'bg-gradient-to-br from-slate-300 to-slate-500 text-white' :
+                      index === 2 ? 'bg-gradient-to-br from-orange-400 to-amber-700 text-white' :
+                      'bg-black/60 backdrop-blur-md text-white'}
+                  `}>
+                    {index + 1}
+                  </div>
                 </div>
 
                 {/* Type Badge */}
@@ -169,9 +176,9 @@ export default function TrendingSection({
                 </div>
               </div>
 
-              <CardContent className="p-4 space-y-3">
+              <CardContent className="p-3 space-y-2">
                 {/* Name */}
-                <h3 className="font-bold text-lg line-clamp-1 group-hover:text-blue-600 transition-colors">
+                <h3 className="font-bold text-base line-clamp-1 group-hover:text-blue-600 transition-colors">
                   {dest.name}
                 </h3>
 

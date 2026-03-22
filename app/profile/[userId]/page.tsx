@@ -140,7 +140,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Cover Image */}
-      <div className="relative h-64 bg-gradient-to-r from-blue-500 to-purple-600">
+      <div className="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600">
         {profile.coverImage && (
           <img
             src={profile.coverImage}
@@ -152,13 +152,13 @@ export default function ProfilePage({ params }: ProfilePageProps) {
 
       {/* Profile Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative -mt-24 mb-8">
-          <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="relative -mt-16 mb-6">
+          <div className="bg-white rounded-lg shadow-lg p-5">
             <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
               {/* Avatar */}
-              <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
+              <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
                 <AvatarImage src={profile.avatar} alt={profile.name} />
-                <AvatarFallback className="text-4xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
                   {profile.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -167,11 +167,11 @@ export default function ProfilePage({ params }: ProfilePageProps) {
               <div className="flex-1">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900">
+                    <h1 className="text-xl font-bold text-gray-900">
                       {profile.name}
                     </h1>
                     {profile.bio && (
-                      <p className="text-gray-600 mt-2">{profile.bio}</p>
+                      <p className="text-sm text-gray-600 mt-1">{profile.bio}</p>
                     )}
                     
                     {/* Location & Website */}
@@ -239,41 +239,41 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 </div>
 
                 {/* Stats */}
-                <div className="flex flex-wrap gap-6 mt-6">
+                <div className="flex flex-wrap gap-4 mt-4">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 text-yellow-500" />
+                    <Star className="w-4 h-4 text-yellow-500" />
                     <div>
-                      <div className="font-bold text-lg">
+                      <div className="font-bold text-base">
                         {profile.stats?.reviewsCount || 0}
                       </div>
-                      <div className="text-xs text-gray-500">Đánh giá</div>
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Đánh giá</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 cursor-pointer hover:text-blue-600">
-                    <Users className="w-5 h-5 text-blue-500" />
+                    <Users className="w-4 h-4 text-blue-500" />
                     <div>
-                      <div className="font-bold text-lg">
+                      <div className="font-bold text-base">
                         {profile.stats?.followersCount || 0}
                       </div>
-                      <div className="text-xs text-gray-500">Người theo dõi</div>
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Người theo dõi</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 cursor-pointer hover:text-blue-600">
-                    <Users className="w-5 h-5 text-green-500" />
+                    <Users className="w-4 h-4 text-green-500" />
                     <div>
-                      <div className="font-bold text-lg">
+                      <div className="font-bold text-base">
                         {profile.stats?.followingCount || 0}
                       </div>
-                      <div className="text-xs text-gray-500">Đang theo dõi</div>
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Đang theo dõi</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-purple-500" />
+                    <MapPin className="w-4 h-4 text-purple-500" />
                     <div>
-                      <div className="font-bold text-lg">
+                      <div className="font-bold text-base">
                         {profile.stats?.destinationsVisited || 0}
                       </div>
-                      <div className="text-xs text-gray-500">Đã đến</div>
+                      <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Đã đến</div>
                     </div>
                   </div>
                 </div>

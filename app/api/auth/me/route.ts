@@ -8,11 +8,17 @@ import jwt from 'jsonwebtoken'
 import { connectDB } from '@/lib/db/mongodb'
 import User from '@/lib/models/User'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-
 export async function GET(req: NextRequest) {
   try {
-    // Get token from cookie
+    const jwtSecret = process.env.JWT_SECRET
+    if (!jwtSecret) {
+      console.error('JWT_SECRET is not configured')
+      return NextResponse.json(
+        { success: false, error: 'Cấu hình xác thực máy chủ chưa hoàn tất' },
+        { status: 500 }
+      )
+    }
+
     const token = req.cookies.get('auth-token')?.value
 
     if (!token) {
@@ -22,21 +28,18 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Verify token
     let decoded: any
     try {
-      decoded = jwt.verify(token, JWT_SECRET)
-    } catch (error) {
+      decoded = jwt.verify(token, jwtSecret)
+    } catch {
       return NextResponse.json(
         { success: false, error: 'Token không hợp lệ hoặc đã hết hạn' },
         { status: 401 }
       )
     }
 
-    // Connect to MongoDB
     await connectDB()
 
-    // Get user from database
     const user = await User.findById(decoded.userId).select('-passwordHash')
 
     if (!user) {
@@ -46,7 +49,6 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Check if account is active
     if (!user.isActive) {
       return NextResponse.json(
         { success: false, error: 'Tài khoản đã bị vô hiệu hóa' },
@@ -54,18 +56,16 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Check if account is banned
     if (user.isBanned) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: `Tài khoản đã bị cấm${user.banReason ? ': ' + user.banReason : ''}` 
+        {
+          success: false,
+          error: `Tài khoản đã bị cấm${user.banReason ? ': ' + user.banReason : ''}`,
         },
         { status: 403 }
       )
     }
 
-    // Update last active
     user.lastActive = new Date()
     await user.save()
 
@@ -86,7 +86,6 @@ export async function GET(req: NextRequest) {
         },
       },
     })
-
   } catch (error: any) {
     console.error('Get current user error:', error)
     return NextResponse.json(

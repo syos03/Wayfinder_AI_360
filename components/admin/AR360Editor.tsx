@@ -244,9 +244,6 @@ export default function AR360Editor({
     setYoutubeVideoId('');
     setYoutubeVideoTitle('');
     setYoutubeIs360(false);
-    setStreetViewUrlInput('');
-    setStreetViewTitleInput('');
-    setStreetViewPreviewIndex(0);
     toast.info('🔄 Đã reset về dữ liệu ban đầu');
   };
 
@@ -551,4 +548,3 @@ export default function AR360Editor({
     </div>
   );
 }
-

@@ -15,6 +15,11 @@ interface PieChartProps {
   height?: number;
 }
 
+function pieLabel({ name, percent }: { name?: string; percent?: number }) {
+  const ratio = typeof percent === 'number' ? percent : 0;
+  return `${name || 'Unknown'}: ${(ratio * 100).toFixed(0)}%`;
+}
+
 const DEFAULT_COLORS = [
   '#3b82f6', // blue
   '#10b981', // green
@@ -41,7 +46,7 @@ export function PieChart({
           cx="50%"
           cy="50%"
           labelLine={false}
-          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+          label={pieLabel}
           outerRadius={80}
           fill="#8884d8"
           dataKey={dataKey}

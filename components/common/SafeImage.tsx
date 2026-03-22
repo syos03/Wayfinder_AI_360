@@ -34,44 +34,62 @@ export default function SafeImage({
 }: SafeImageProps) {
   const [useFallback, setUseFallback] = useState(false);
 
-  // Check if it's an external URL
-  const isExternal = src?.startsWith('http://') || src?.startsWith('https://');
+  // List of hostnames configured in next.config.js to avoid "unconfigured host" errors
+  const ALLOWED_HOSTS = [
+    'res.cloudinary.com',
+    'unsplash.com',
+    'images.unsplash.com',
+    'picsum.photos',
+    'googleusercontent.com',
+    'lh3.googleusercontent.com',
+    'ytimg.com',
+    'i.ytimg.com',
+    'wikimedia.org',
+    'upload.wikimedia.org',
+    'vtv.vn',
+    'pexels.com',
+    'images.pexels.com',
+    'vetaucondao.vn',
+    'vietnamairlines.com',
+    'www.vietnamairlines.com',
+    'letsflytravel.vn',
+    'mia.vn',
+    'phongnhatourist.com',
+    'bizweb.dktcdn.net',
+    'dktcdn.net',
+    'xanhsm.com',
+    'quangbinhtravel.vn',
+    'dulichso.vn',
+    'ivivu.com',
+    'klook.com',
+    'imagekit.io'
+  ];
 
-  // For external images, use regular img tag to avoid hostname configuration issues
-  // This allows any external image to work without needing to add hostname to next.config.js
-  if (isExternal || useFallback) {
-    if (fill) {
-      return (
-        <img
-          src={src}
-          alt={alt}
-          className={className}
-          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-          onError={(e) => {
-            console.error('Image load error:', src);
-            // Image will show broken image icon, but won't crash the app
-          }}
-          {...props}
-        />
-      );
+  // List of hostnames known to be problematic with Next.js Image optimization
+  // (e.g. they block head-less fetches, have hotlink protection, or are very slow)
+  const OPTIMIZATION_BLACKLIST = [
+    'quangbinhtravel.vn'
+  ];
+
+  const isConfiguredHost = (url: string) => {
+    try {
+      if (url.startsWith('/') || url.startsWith('./') || url.startsWith('../')) return true;
+      const hostname = new URL(url).hostname;
+      
+      // Don't optimize blacklisted hosts
+      if (OPTIMIZATION_BLACKLIST.some(host => hostname === host || hostname.endsWith('.' + host))) {
+        return false;
+      }
+
+      return ALLOWED_HOSTS.some(host => hostname === host || hostname.endsWith('.' + host));
+    } catch {
+      return false;
     }
-    return (
-      <img
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        className={className}
-        onError={(e) => {
-          console.error('Image load error:', src);
-        }}
-        {...props}
-      />
-    );
-  }
+  };
 
-  // For local images, use Next.js Image for optimization
-  try {
+  const canUseNextImage = !useFallback && isConfiguredHost(src);
+
+  if (canUseNextImage) {
     if (fill) {
       return (
         <Image
@@ -99,30 +117,37 @@ export default function SafeImage({
         {...props}
       />
     );
-  } catch (error) {
-    // Fallback to regular img if Image component fails
-    setUseFallback(true);
-    if (fill) {
-      return (
-        <img
-          src={src}
-          alt={alt}
-          className={className}
-          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-          {...props}
-        />
-      );
-    }
+  }
+
+  // Fallback to regular img tag
+  if (fill) {
     return (
       <img
         src={src}
         alt={alt}
-        width={width}
-        height={height}
         className={className}
+        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+        loading="lazy"
+        onError={(e) => {
+          console.error('Image load error:', src);
+        }}
         {...props}
       />
     );
   }
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      className={className}
+      loading="lazy"
+      onError={(e) => {
+        console.error('Image load error:', src);
+      }}
+      {...props}
+    />
+  );
 }
 

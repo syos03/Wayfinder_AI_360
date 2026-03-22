@@ -4,7 +4,6 @@ import "./globals.css";
 import { Header } from "@/components/common/header";
 import { Footer } from "@/components/common/footer";
 import { BottomNavWrapper } from "@/components/common/bottom-nav-wrapper";
-import { HydrationProvider } from "@/components/providers/hydration-provider";
 import { AnalyticsProvider } from "@/components/providers/analytics-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { OfflineIndicator } from "@/components/ui/offline-indicator";
@@ -27,7 +26,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Wayfinder AI - Smart Travel Planner",
-  description: "Khám phá Việt Nam thông minh với Wayfinder AI. Tìm kiếm điểm đến, đọc đánh giá và lên kế hoạch du lịch hoàn hảo.",
+  description:
+    "Khám phá Việt Nam thông minh với Wayfinder AI. Tìm kiếm điểm đến, đọc đánh giá và lên kế hoạch du lịch hoàn hảo.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -35,12 +35,8 @@ export const metadata: Metadata = {
     title: "Wayfinder AI",
   },
   icons: {
-    icon: [
-      { url: "/icons/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: [
-      { url: "/icons/icon.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/icons/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icons/icon.svg", type: "image/svg+xml" }],
   },
 };
 

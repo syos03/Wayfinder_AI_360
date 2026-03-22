@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import SafeImage from '@/components/common/SafeImage';
 import { MapPin, Star, Sparkles, ChevronRight } from 'lucide-react';
 
 interface Destination {
@@ -16,7 +18,7 @@ interface Destination {
   rating: number;
   reviewsCount: number;
   description: string;
-  source?: 'collaborative' | 'personalized';
+  source?: 'collaborative' | 'personalized' | 'trending';
 }
 
 interface PersonalizedSectionProps {
@@ -45,20 +47,32 @@ export default function PersonalizedSection({
       });
       const data = await res.json();
 
-      if (data.success) {
+      if (data.success && data.data && data.data.length > 0) {
         setDestinations(data.data);
       } else {
         if (res.status === 401) {
           setError('Vui lòng đăng nhập để xem gợi ý cá nhân hóa');
         } else {
-          setError(data.error || 'Không thể tải gợi ý');
+          await fetchFallbackRecommendations();
         }
       }
     } catch (error) {
       console.error('Failed to fetch personalized recommendations:', error);
-      setError('Đã xảy ra lỗi khi tải gợi ý');
+      await fetchFallbackRecommendations();
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchFallbackRecommendations = async () => {
+    try {
+      const res = await fetch('/api/recommendations/trending?limit=4&period=30d');
+      const data = await res.json();
+      if (data.success) {
+        setDestinations(data.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch fallback recommendations:', error);
     }
   };
 
@@ -66,15 +80,15 @@ export default function PersonalizedSection({
     return (
       <div className="space-y-6">
         {showHeader && (
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-purple-500" />
+          <h2 className="text-lg font-bold flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-purple-500" />
             Dành riêng cho bạn
           </h2>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i} className="overflow-hidden animate-pulse">
-              <div className="h-56 bg-gray-200" />
+              <div className="h-40 bg-gray-200" />
               <CardContent className="p-4">
                 <div className="h-6 bg-gray-200 rounded mb-2" />
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
@@ -104,40 +118,48 @@ export default function PersonalizedSection({
 
   if (destinations.length === 0) {
     return (
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-        <Sparkles className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-        <p className="text-gray-600 mb-2">Chưa có gợi ý cá nhân hóa</p>
-        <p className="text-sm text-gray-500">
-          Hãy khám phá và đánh giá một số điểm đến để nhận gợi ý!
+      <div className="bg-muted/30 border border-dashed border-border rounded-xl p-8 text-center">
+        <Sparkles className="w-12 h-12 text-primary/20 mx-auto mb-4" />
+        <h3 className="text-lg font-bold mb-2">Chưa có gợi ý cá nhân hóa</h3>
+        <p className="text-muted-foreground mb-6 max-w-md mx-auto text-sm">
+          Hãy khám phá và đánh giá một số điểm đến để AI có thể hiểu sở thích của bạn hơn!
         </p>
+        <Link href="/explore">
+          <Button variant="outline" size="sm" className="rounded-full px-6">
+            Khám phá ngay
+          </Button>
+        </Link>
       </div>
     );
   }
+
+  const isFallback = destinations.every(d => !d.source || d.source === 'trending');
 
   return (
     <div className="space-y-6">
       {showHeader && (
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-purple-500" />
-            Dành riêng cho bạn
-            <span className="text-sm font-normal text-gray-500">
-              ({destinations.length} gợi ý)
+          <h2 className="text-lg font-bold flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            {isFallback ? 'Có thể bạn sẽ thích' : 'Dành riêng cho bạn'}
+            <span className="text-xs font-normal text-muted-foreground ml-1">
+              {isFallback ? '(Phổ biến)' : `(${destinations.length} gợi ý)`}
             </span>
           </h2>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {destinations.map((dest) => (
           <Link key={dest._id} href={`/destinations/${dest._id}`}>
             <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group h-full">
               {/* Image */}
-              <div className="relative h-56 overflow-hidden">
-                <img
+              <div className="relative h-48 overflow-hidden">
+                <SafeImage
                   src={dest.images[0] || '/placeholder-destination.jpg'}
                   alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
 
                 {/* Source Badge */}
@@ -154,9 +176,9 @@ export default function PersonalizedSection({
                 </div>
               </div>
 
-              <CardContent className="p-4 space-y-3">
+              <CardContent className="p-3 space-y-2">
                 {/* Name */}
-                <h3 className="font-bold text-lg line-clamp-1 group-hover:text-blue-600 transition-colors">
+                <h3 className="font-bold text-base line-clamp-1 group-hover:text-blue-600 transition-colors">
                   {dest.name}
                 </h3>
 

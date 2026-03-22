@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import SafeImage from '@/components/common/SafeImage';
 import SearchBar from '@/components/search/SearchBar';
 import AdvancedFilters from '@/components/search/AdvancedFilters';
 import { 
@@ -22,6 +23,7 @@ import {
   Loader2
 } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from "framer-motion";
 import { trackDestinationClick } from '@/lib/utils/trackDestinationView';
 import { trackSearchPerformed, trackDestinationClicked as trackDestinationClickedPostHog, trackFilterApplied, trackFilterCleared } from '@/lib/analytics';
 
@@ -183,21 +185,31 @@ export default function ExplorePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <Badge className="mb-4 bg-primary text-primary-foreground border-0 text-sm">
-            <MapPin className="w-4 h-4 mr-2" />
-            Khám phá Việt Nam
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            <span className="text-primary">Tìm Kiếm</span> Điểm Đến
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            {pagination.total} điểm đến đang chờ bạn khám phá
-          </p>
+    <div className="min-h-screen bg-background">
+      {/* Visual Header Section */}
+      <section className="relative py-10 px-6 overflow-hidden bg-muted/30 border-b border-border/50">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5" />
+        <div className="container mx-auto relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1.5 text-xs hover:bg-primary/20 transition-colors">
+              <MapPin className="w-3.5 h-3.5 mr-1.5" />
+              Khám phá Việt Nam
+            </Badge>
+            <h1 className="text-3xl md:text-4xl font-black text-foreground mb-4 tracking-tighter">
+              <span className="gradient-text-animated">Tìm Kiếm</span> Điểm Đến
+            </h1>
+            <p className="text-muted-foreground text-base max-w-xl mx-auto font-medium leading-relaxed">
+              {pagination.total} địa danh tuyệt đẹp đang chờ bạn khám phá. Lên kế hoạch cho hành trình của bạn ngay hôm nay.
+            </p>
+          </motion.div>
         </div>
+      </section>
+
+      <div className="container mx-auto px-4 max-w-7xl py-8">
 
         {/* Search Bar */}
         <div className="mb-6 max-w-2xl mx-auto">
@@ -252,18 +264,19 @@ export default function ExplorePage() {
                     });
                   }}
                 >
-                  <Card className="card-premium-hover overflow-hidden h-full group cursor-pointer">
+                  <Card className="card-premium-hover overflow-hidden h-full group cursor-pointer border-border/50 bg-card/50 backdrop-blur-sm">
                     {/* Image */}
                     <div className="relative h-56 bg-muted overflow-hidden">
                       {destination.images[0] ? (
-                        <img
+                        <SafeImage
                           src={destination.images[0]}
                           alt={destination.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                          <MapPin className="w-16 h-16 text-primary/40" />
+                          <MapPin className="w-12 h-12 text-primary/40" />
                         </div>
                       )}
                       
@@ -271,53 +284,53 @@ export default function ExplorePage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
                       {/* Region Badge */}
-                      <Badge className={`absolute top-4 right-4 ${getRegionBadgeColor(destination.region)} shadow-lg backdrop-blur-sm`}>
+                      <Badge className={`absolute top-3 right-3 text-[10px] px-2 py-0.5 ${getRegionBadgeColor(destination.region)} shadow-lg backdrop-blur-sm`}>
                         {destination.region}
                       </Badge>
                     </div>
 
                     {/* Content */}
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-xl font-bold line-clamp-1 group-hover:text-primary transition-colors duration-300">
+                    <CardHeader className="pb-2 px-4 pt-4">
+                      <CardTitle className="text-lg font-bold line-clamp-1 group-hover:text-primary transition-colors duration-300 tracking-tight">
                         {destination.name}
                       </CardTitle>
-                      <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
-                        <MapPin className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors" />
+                      <div className="flex items-center gap-2 text-muted-foreground font-medium">
+                        <MapPin className="w-4 h-4 text-primary opacity-70 group-hover:opacity-100 transition-opacity" />
                         <span>{destination.province}</span>
                       </div>
                     </CardHeader>
 
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-3 px-4 pb-4">
                       {/* Description */}
-                      <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+                      <p className="text-muted-foreground text-[13px] line-clamp-2 leading-snug">
                         {destination.description}
                       </p>
 
                       {/* Meta Info */}
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline" className="gap-1">
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        <Badge variant="outline" className="gap-1 bg-background/50 border-border/50 font-medium px-2 py-0.5 text-[10px]">
                           {destination.type}
                         </Badge>
-                        <Badge variant="outline" className="gap-1">
-                          <Clock className="w-3 h-3" />
+                        <Badge variant="outline" className="gap-1 bg-background/50 border-border/50 font-medium px-2 py-0.5 text-[10px]">
+                          <Clock className="w-3 h-3 text-primary/70" />
                           {destination.duration}
                         </Badge>
-                        <Badge variant="outline" className="gap-1">
-                          <DollarSign className="w-3 h-3" />
+                        <Badge variant="outline" className="gap-1 bg-background/50 border-border/50 font-medium px-2 py-0.5 text-[10px]">
+                          <DollarSign className="w-3 h-3 text-emerald-500/80" />
                           {formatBudget(destination.budget)}
                         </Badge>
                       </div>
 
                       {/* Rating */}
-                      <div className="flex items-center justify-between pt-3 border-t border-border/50">
+                      <div className="flex items-center justify-between pt-2 border-t border-border/50">
                         <div className="flex items-center gap-2">
                           <div className="flex items-center">
-                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-semibold ml-1 text-foreground">
+                            <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                            <span className="font-semibold ml-1 text-foreground text-xs">
                               {destination.rating.toFixed(1)}
                             </span>
                           </div>
-                          <span className="text-muted-foreground text-sm">
+                          <span className="text-muted-foreground text-[11px]">
                             ({destination.reviewCount} đánh giá)
                           </span>
                         </div>

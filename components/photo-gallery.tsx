@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react"
+import SafeImage from "@/components/common/SafeImage"
 import type { ProvinceImage } from "@/data/province-images"
 
 interface PhotoGalleryProps {
@@ -45,14 +46,12 @@ export function PhotoGallery({ images, provinceName }: PhotoGalleryProps) {
             onClick={() => openLightbox(index)}
           >
             <CardContent className="p-0 relative">
-              <div className="h-56 bg-gray-100 overflow-hidden">
-                <img
+              <div className="h-56 bg-gray-100 overflow-hidden relative">
+                <SafeImage
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none"
-                  }}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
@@ -99,11 +98,15 @@ export function PhotoGallery({ images, provinceName }: PhotoGalleryProps) {
           )}
 
           <div className="max-w-4xl max-h-[80vh] px-16">
-            <img
-              src={images[selectedIndex].src}
-              alt={images[selectedIndex].alt}
-              className="max-w-full max-h-[70vh] object-contain mx-auto"
-            />
+            <div className="relative w-full h-[70vh]">
+              <SafeImage
+                src={images[selectedIndex].src}
+                alt={images[selectedIndex].alt}
+                fill
+                priority
+                className="object-contain mx-auto"
+              />
+            </div>
             {images[selectedIndex].caption && (
               <p className="text-white text-center mt-4 text-lg">
                 {images[selectedIndex].caption}

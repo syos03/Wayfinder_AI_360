@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import SafeImage from '@/components/common/SafeImage'
 import { 
   Star, 
   ThumbsUp, 
@@ -102,18 +103,18 @@ export function ReviewList({ destinationId }: ReviewListProps) {
 
   const renderStars = (rating: number) => {
     return (
-      <div className="flex gap-1">
+      <div className="flex gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`w-4 h-4 ${
-              star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+            className={`w-4 h-4 transition-all ${
+              star <= rating ? 'fill-yellow-400 text-yellow-400 drop-shadow-[0_0_4px_rgba(250,204,21,0.2)]' : 'text-muted-foreground/30'
             }`}
           />
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   const renderRatingDistribution = () => {
     if (!stats || stats.totalReviews === 0) return null
@@ -125,15 +126,15 @@ export function ReviewList({ destinationId }: ReviewListProps) {
           const percentage = (count / stats.totalReviews) * 100
 
           return (
-            <div key={rating} className="flex items-center gap-3 text-sm">
-              <span className="w-12">{rating} sao</span>
-              <div className="flex-1 bg-gray-200 rounded-full h-2">
+            <div key={rating} className="flex items-center gap-4 text-sm font-medium">
+              <span className="w-12 text-muted-foreground">{rating} sao</span>
+              <div className="flex-1 bg-muted rounded-full h-2.5 overflow-hidden">
                 <div
-                  className="bg-yellow-400 h-2 rounded-full"
+                  className="bg-yellow-400 h-full rounded-full shadow-[0_0_8px_rgba(250,204,21,0.3)] transition-all duration-1000"
                   style={{ width: `${percentage}%` }}
                 />
               </div>
-              <span className="w-12 text-gray-600 text-right">{count}</span>
+              <span className="w-12 text-foreground text-right">{count}</span>
             </div>
           )
         })}
@@ -153,24 +154,24 @@ export function ReviewList({ destinationId }: ReviewListProps) {
     <div className="space-y-6">
       {/* Stats Overview */}
       {stats && stats.totalReviews > 0 && (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="grid md:grid-cols-3 gap-6">
+        <Card className="border-border/50 bg-card/30 backdrop-blur-md shadow-xl overflow-hidden">
+          <CardContent className="pt-8 px-8 pb-8">
+            <div className="grid md:grid-cols-3 gap-8 items-center">
               {/* Average Rating */}
-              <div className="text-center">
-                <div className="text-5xl font-bold text-gray-900">
+              <div className="text-center md:border-r border-border/50 px-4">
+                <div className="text-6xl font-black text-foreground tracking-tighter mb-1">
                   {stats.avgRating.toFixed(1)}
                 </div>
-                <div className="flex justify-center my-2">
+                <div className="flex justify-center mb-3 scale-110 origin-center">
                   {renderStars(Math.round(stats.avgRating))}
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                   {stats.totalReviews} đánh giá
                 </p>
               </div>
 
               {/* Rating Distribution */}
-              <div className="md:col-span-2">
+              <div className="md:col-span-2 space-y-3">
                 {renderRatingDistribution()}
               </div>
             </div>
@@ -220,22 +221,22 @@ export function ReviewList({ destinationId }: ReviewListProps) {
             const hasVotedNotHelpful = user && review.notHelpfulBy.includes(user.id)
 
             return (
-              <Card key={review._id}>
-                <CardContent className="pt-6">
+              <Card key={review._id} className="border-border/40 bg-card/60 backdrop-blur-sm hover:border-primary/30 transition-all group overflow-hidden shadow-lg">
+                <CardContent className="pt-6 px-6 pb-6">
                   {/* User Info & Rating */}
-                  <div className="flex items-start gap-4 mb-4">
-                    <Avatar>
+                  <div className="flex items-start gap-3 mb-4">
+                    <Avatar className="w-10 h-10 border-2 border-primary/20 shadow-inner">
                       <AvatarImage src={review.userAvatar} />
-                      <AvatarFallback>{review.userName.charAt(0)}</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary font-bold">{review.userName.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <span className="font-medium">{review.userName}</span>
-                        <Badge variant="outline" className="whitespace-normal break-words max-w-full">
+                      <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                        <span className="font-bold text-base">{review.userName}</span>
+                        <div className="px-2 py-0.5 bg-muted rounded-full border border-border/50 scale-75 origin-left">
                           {renderStars(review.rating)}
-                        </Badge>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-[11px] text-muted-foreground font-medium">
                         {formatDistanceToNow(new Date(review.createdAt), {
                           addSuffix: true,
                           locale: vi,
@@ -245,44 +246,52 @@ export function ReviewList({ destinationId }: ReviewListProps) {
                   </div>
 
                   {/* Title & Content */}
-                  <h3 className="font-semibold text-lg mb-2">{review.title}</h3>
-                  <p className="text-gray-700 mb-4 whitespace-pre-wrap">{review.content}</p>
+                  <h3 className="font-bold text-lg mb-2 tracking-tight">{review.title}</h3>
+                  <p className="text-foreground/80 mb-4 whitespace-pre-wrap leading-relaxed font-medium text-sm">{review.content}</p>
 
                   {/* Photos */}
                   {review.photos.length > 0 && (
-                    <div className="grid grid-cols-3 gap-2 mb-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
                       {review.photos.map((photo, idx) => (
-                        <img
-                          key={idx}
-                          src={photo}
-                          alt={`Review photo ${idx + 1}`}
-                          className="w-full h-32 object-cover rounded"
-                        />
+                        <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-border/50 shadow-sm group-hover:shadow-md transition-shadow">
+                          <SafeImage
+                            src={photo}
+                            alt={`Review photo ${idx + 1}`}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        </div>
                       ))}
                     </div>
                   )}
 
                   {/* Helpful Buttons */}
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-gray-600">Đánh giá này có hữu ích không?</span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleVote(review._id, true)}
-                      className={hasVotedHelpful ? 'bg-blue-50 border-blue-300' : ''}
-                    >
-                      <ThumbsUp className="w-4 h-4 mr-1" />
-                      Hữu ích ({review.helpful})
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleVote(review._id, false)}
-                      className={hasVotedNotHelpful ? 'bg-red-50 border-red-300' : ''}
-                    >
-                      <ThumbsDown className="w-4 h-4 mr-1" />
-                      Không ({review.notHelpful})
-                    </Button>
+                  <div className="flex items-center gap-6 pt-6 border-t border-border/50">
+                    <span className="text-sm text-muted-foreground font-bold">Hữu ích?</span>
+                    <div className="flex gap-3">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleVote(review._id, true)}
+                        className={`rounded-full h-10 px-4 flex items-center gap-2 translate-all ${
+                          hasVotedHelpful ? 'bg-primary/20 text-primary border border-primary/30' : 'hover:bg-muted'
+                        }`}
+                      >
+                        <ThumbsUp className={`w-4 h-4 ${hasVotedHelpful ? 'fill-primary' : ''}`} />
+                        <span className="font-bold">{review.helpful}</span>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleVote(review._id, false)}
+                        className={`rounded-full h-10 px-4 flex items-center gap-2 transition-all ${
+                          hasVotedNotHelpful ? 'bg-destructive/20 text-destructive border border-destructive/30' : 'hover:bg-muted'
+                        }`}
+                      >
+                        <ThumbsDown className={`w-4 h-4 ${hasVotedNotHelpful ? 'fill-destructive' : ''}`} />
+                        <span className="font-bold">{review.notHelpful}</span>
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

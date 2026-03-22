@@ -38,26 +38,22 @@ export function StreetViewViewer({ lat, lng, className = '' }: StreetViewViewerP
         if (!panoRef.current) return;
 
         try {
-          const panorama = new google.maps.StreetViewPanorama(
-            panoRef.current,
-            {
-              position: { lat, lng },
-              pov: { heading: 165, pitch: 0 },
-              zoom: 1,
-              fullscreenControl: true,
-              addressControl: false,
-              linksControl: true,
-              panControl: true,
-              enableCloseButton: false,
-            }
-          );
+          new google.maps.StreetViewPanorama(panoRef.current, {
+            position: { lat, lng },
+            pov: { heading: 165, pitch: 0 },
+            zoom: 1,
+            fullscreenControl: true,
+            addressControl: false,
+            linksControl: true,
+            panControl: true,
+            enableCloseButton: false,
+          });
 
-          // Check if Street View is available at this location
           const streetViewService = new google.maps.StreetViewService();
           streetViewService.getPanorama(
             { location: { lat, lng }, radius: 100 },
-            (data, status) => {
-              if (status !== google.maps.StreetViewStatus.OK) {
+            (_data: unknown, status: string) => {
+              if (status !== 'OK') {
                 setError('Street View không khả dụng tại vị trí này');
               }
               setLoading(false);
@@ -98,12 +94,5 @@ export function StreetViewViewer({ lat, lng, className = '' }: StreetViewViewerP
     );
   }
 
-  return (
-    <div
-      ref={panoRef}
-      className={`${className}`}
-      style={{ minHeight: '400px' }}
-    />
-  );
+  return <div ref={panoRef} className={className} style={{ minHeight: '400px' }} />;
 }
-

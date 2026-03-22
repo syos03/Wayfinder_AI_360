@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Star, Upload, X, Loader2 } from 'lucide-react'
+import Link from 'next/link'
 import { useAuth } from '@/hooks/use-auth'
 import { trackReviewSubmitted } from '@/lib/analytics'
 
@@ -123,10 +124,13 @@ export function ReviewForm({ destinationId, destinationName, onSuccess, onCancel
 
   if (!isAuthenticated) {
     return (
-      <Card className="border-yellow-200 bg-yellow-50">
-        <CardContent className="pt-6">
-          <p className="text-center text-gray-700">
-            Vui lòng <a href="/login" className="text-blue-600 underline">đăng nhập</a> để viết đánh giá
+      <Card className="border-primary/20 bg-primary/5 backdrop-blur-md">
+        <CardContent className="pt-8 text-center px-6">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <X className="w-8 h-8 text-primary" />
+          </div>
+          <p className="text-foreground/80 font-medium text-lg">
+            Vui lòng <Link href="/login" className="text-primary font-bold hover:underline transition-all">đăng nhập</Link> để viết đánh giá và chia sẻ trải nghiệm của bạn.
           </p>
         </CardContent>
       </Card>
@@ -134,9 +138,12 @@ export function ReviewForm({ destinationId, destinationName, onSuccess, onCancel
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Viết đánh giá cho {destinationName}</CardTitle>
+    <Card className="border-border/50 bg-card/80 backdrop-blur-xl shadow-2xl">
+      <CardHeader className="pb-2 px-6 pt-6">
+        <CardTitle className="text-xl font-black tracking-tight flex items-center gap-3">
+          <div className="w-1.5 h-6 bg-primary rounded-full" />
+          Viết đánh giá cho {destinationName}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -145,32 +152,34 @@ export function ReviewForm({ destinationId, destinationName, onSuccess, onCancel
             <label className="block text-sm font-medium mb-2">
               Đánh giá của bạn <span className="text-red-500">*</span>
             </label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(0)}
-                  className="transition-transform hover:scale-110"
-                >
-                  <Star
-                    className={`w-8 h-8 ${
-                      star <= (hoverRating || rating)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
-                    }`}
-                  />
-                </button>
-              ))}
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className="transition-all hover:scale-125 hover:rotate-12 active:scale-95"
+                  >
+                    <Star
+                      className={`w-10 h-10 transition-all duration-300 ${
+                        star <= (hoverRating || rating)
+                          ? 'fill-yellow-400 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]'
+                          : 'text-muted-foreground/30'
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
               {rating > 0 && (
-                <span className="ml-2 text-sm text-gray-600 self-center">
-                  {rating === 1 && 'Rất tệ'}
-                  {rating === 2 && 'Tệ'}
-                  {rating === 3 && 'Tạm được'}
-                  {rating === 4 && 'Tốt'}
-                  {rating === 5 && 'Tuyệt vời'}
+                <span className="text-base font-bold text-foreground animate-in fade-in slide-in-from-left-2">
+                  {rating === 1 && '👎 Rất tệ'}
+                  {rating === 2 && '😕 Tệ'}
+                  {rating === 3 && '😐 Tạm được'}
+                  {rating === 4 && '😊 Tốt'}
+                  {rating === 5 && '🤩 Tuyệt vời'}
                 </span>
               )}
             </div>
@@ -255,14 +264,16 @@ export function ReviewForm({ destinationId, destinationName, onSuccess, onCancel
 
           {/* Error/Success Messages */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive px-6 py-4 rounded-xl flex items-center gap-3 animate-in fade-in zoom-in-95">
+              <X className="w-5 h-5 flex-shrink-0" />
+              <p className="font-medium">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-              {success}
+            <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-6 py-4 rounded-xl flex items-center gap-3 animate-in fade-in zoom-in-95">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <p className="font-medium">{success}</p>
             </div>
           )}
 

@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, DollarSign, Heart, Sparkles, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import SafeImage from '@/components/common/SafeImage';
 import { useAuth } from '@/hooks/use-auth';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -254,27 +255,27 @@ function AIPlannerContent() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-12">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Enhanced Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
             className="flex items-center justify-center gap-3 mb-6"
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center shadow-lg">
-              <Sparkles className="w-8 h-8 text-primary-foreground" />
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center shadow-lg">
+              <Sparkles className="w-6 h-6 text-primary-foreground" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold gradient-text-animated">
+            <h1 className="text-2xl md:text-3xl font-bold gradient-text-animated">
               AI Lên Kế Hoạch Du Lịch
             </h1>
           </motion.div>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-base text-muted-foreground">
             Powered by Google Gemini AI - Tạo lịch trình hoàn hảo trong vài giây
           </p>
         </motion.div>
@@ -284,7 +285,7 @@ function AIPlannerContent() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex items-center justify-center mb-12"
+          className="flex items-center justify-center mb-10"
         >
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center">
@@ -292,14 +293,14 @@ function AIPlannerContent() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: s * 0.1 }}
-                className={`relative w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                className={`relative w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
                   step >= s
                     ? 'bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-lg'
                     : 'bg-muted text-muted-foreground'
                 }`}
               >
                 {step > s ? (
-                  <CheckCircle2 className="w-6 h-6" />
+                  <CheckCircle2 className="w-5 h-5" />
                 ) : (
                   s
                 )}
@@ -312,7 +313,7 @@ function AIPlannerContent() {
                 )}
               </motion.div>
               {s < 4 && (
-                <div className="relative w-20 h-1 mx-2 bg-muted rounded-full overflow-hidden">
+                <div className="relative w-16 h-0.5 mx-2 bg-muted rounded-full overflow-hidden">
                   <motion.div
                     className={`absolute inset-y-0 left-0 rounded-full ${
                       step > s ? 'bg-gradient-to-r from-primary to-primary/70' : 'bg-muted'
@@ -416,11 +417,14 @@ function AIPlannerContent() {
                         >
                           <div className="flex items-center gap-3">
                             {dest.images?.[0] && (
-                              <img
-                                src={dest.images[0]}
-                                alt={dest.name}
-                                className="w-12 h-12 rounded-lg object-cover"
-                              />
+                              <div className="w-12 h-12 rounded-lg overflow-hidden relative">
+                                <SafeImage
+                                  src={dest.images[0]}
+                                  alt={dest.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
                             )}
                             <div>
                               <p className="font-semibold">{dest.name}</p>

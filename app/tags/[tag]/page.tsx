@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import SafeImage from '@/components/common/SafeImage';
 import { MapPin, Star, Tag, ArrowLeft, ChevronRight } from 'lucide-react';
 
 interface Destination {
@@ -119,10 +120,11 @@ export default function TagPage({ params }: { params: Promise<{ tag: string }> }
                 <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group h-full">
                   {/* Image */}
                   <div className="relative h-56 overflow-hidden">
-                    <img
+                    <SafeImage
                       src={dest.images[0] || '/placeholder-destination.jpg'}
                       alt={dest.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
                     />
 
                     {/* Tag Badge */}

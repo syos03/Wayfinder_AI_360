@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import SafeImage from '@/components/common/SafeImage';
 import { MapPin, Star, TrendingUp, ChevronRight } from 'lucide-react';
 
 interface Destination {
@@ -54,11 +55,11 @@ export default function SimilarDestinations({
   if (loading) {
     return (
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold">🎯 Điểm đến tương tự</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h2 className="text-lg font-bold">🎯 Điểm đến tương tự</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
             <Card key={i} className="overflow-hidden animate-pulse">
-              <div className="h-48 bg-gray-200" />
+              <div className="h-40 bg-gray-200" />
               <CardContent className="p-4">
                 <div className="h-6 bg-gray-200 rounded mb-2" />
                 <div className="h-4 bg-gray-200 rounded w-2/3" />
@@ -77,9 +78,9 @@ export default function SimilarDestinations({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+        <h2 className="text-lg font-bold flex items-center gap-2">
           🎯 Điểm đến tương tự
-          <span className="text-sm font-normal text-gray-500">
+          <span className="text-xs font-normal text-gray-500">
             ({destinations.length} gợi ý)
           </span>
         </h2>
@@ -91,10 +92,11 @@ export default function SimilarDestinations({
             <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group h-full">
               {/* Image */}
               <div className="relative h-48 overflow-hidden">
-                <img
+                <SafeImage
                   src={dest.images[0] || '/placeholder-destination.jpg'}
                   alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 {dest.similarityScore && dest.similarityScore >= 70 && (
                   <div className="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
@@ -109,9 +111,9 @@ export default function SimilarDestinations({
                 </div>
               </div>
 
-              <CardContent className="p-4 space-y-3">
+              <CardContent className="p-3 space-y-2">
                 {/* Name */}
-                <h3 className="font-bold text-lg line-clamp-1 group-hover:text-blue-600 transition-colors">
+                <h3 className="font-bold text-base line-clamp-1 group-hover:text-blue-600 transition-colors">
                   {dest.name}
                 </h3>
 

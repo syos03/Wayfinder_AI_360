@@ -98,23 +98,23 @@ export default function MyPlansPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-8 h-8 text-blue-600" />
-              <h1 className="text-3xl font-bold">Kế hoạch của tôi</h1>
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-6 h-6 text-blue-600" />
+              <h1 className="text-xl font-bold">Kế hoạch của tôi</h1>
             </div>
-            <Button asChild className="bg-gradient-to-r from-blue-600 to-purple-600">
+            <Button asChild size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600">
               <Link href="/ai-planner">
-                <Plus className="mr-2 w-4 h-4" />
-                Tạo kế hoạch mới
+                <Plus className="mr-1.5 w-3.5 h-3.5" />
+                Tạo kế hoạch
               </Link>
             </Button>
           </div>
-          <p className="text-gray-600">
+          <p className="text-sm text-gray-600">
             {plans.length > 0
               ? `Bạn có ${plans.length} kế hoạch du lịch`
               : 'Chưa có kế hoạch nào'}
@@ -132,13 +132,13 @@ export default function MyPlansPage() {
           />
         ) : (
           /* Plans Grid */
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {plans.map((plan) => (
               <Card
                 key={plan._id}
                 className="overflow-hidden hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300"
               >
-                <CardContent className="p-6">
+                <CardContent className="p-4">
                   {/* AI Badge */}
                   {plan.aiGenerated && (
                     <Badge className="mb-3 bg-gradient-to-r from-blue-600 to-purple-600">
@@ -148,7 +148,7 @@ export default function MyPlansPage() {
                   )}
 
                   {/* Title */}
-                  <h3 className="text-lg font-bold mb-3 line-clamp-2">
+                  <h3 className="text-base font-bold mb-2 line-clamp-1">
                     {plan.title}
                   </h3>
 

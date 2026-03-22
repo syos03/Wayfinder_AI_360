@@ -92,15 +92,15 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Heart className="w-8 h-8 text-red-500 fill-current" />
-            <h1 className="text-3xl font-bold">Điểm đến yêu thích</h1>
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-1.5">
+            <Heart className="w-6 h-6 text-red-500 fill-current" />
+            <h1 className="text-xl font-bold">Điểm đến yêu thích</h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-sm text-gray-600">
             {favorites.length > 0
               ? `Bạn đã lưu ${favorites.length} điểm đến`
               : 'Chưa có điểm đến yêu thích'}
@@ -118,7 +118,7 @@ export default function FavoritesPage() {
           />
         ) : (
           /* Favorites Grid */
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {favorites.map((destination) => (
               <Card
                 key={destination._id}
@@ -126,7 +126,7 @@ export default function FavoritesPage() {
               >
                 {/* Image */}
                 <Link href={`/destinations/${destination._id}`}>
-                  <div className="relative h-48 bg-gray-200">
+                  <div className="relative h-40 bg-gray-200">
                     {destination.images[0] && (
                       <Image
                         src={destination.images[0]}
