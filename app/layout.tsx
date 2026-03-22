@@ -10,6 +10,7 @@ import { OfflineIndicator } from "@/components/ui/offline-indicator";
 import { WebVitals } from "@/components/monitoring/web-vitals";
 import { Toaster } from "sonner";
 import { BackToTop } from "@/components/ui/back-to-top";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin", "vietnamese"],
@@ -63,6 +64,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AnalyticsProvider>
+            <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
             <WebVitals />
             <OfflineIndicator />
             <Toaster position="top-right" richColors closeButton />

@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Compass, Loader2, Eye, EyeOff, CheckCircle } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
+import { useEffect, useRef } from "react"
+import { toast } from "sonner"
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("")
@@ -54,6 +56,68 @@ export default function RegisterPage() {
       setIsLoading(false)
     }
   }
+
+  const googleButtonRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const initializeGoogle = () => {
+      if (typeof window !== "undefined" && (window as any).google) {
+        (window as any).google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          callback: handleGoogleCallback,
+        });
+
+        if (googleButtonRef.current) {
+          (window as any).google.accounts.id.renderButton(googleButtonRef.current, {
+            theme: "outline",
+            size: "large",
+            width: "100%",
+            text: "signup_with",
+            shape: "rectangular",
+            logo_alignment: "left",
+          });
+        }
+      }
+    };
+
+    if ((window as any).google) {
+      initializeGoogle();
+    } else {
+      const interval = setInterval(() => {
+        if ((window as any).google) {
+          initializeGoogle();
+          clearInterval(interval);
+        }
+      }, 500);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  const handleGoogleCallback = async (response: any) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: response.credential }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Đăng ký bằng Google thành công!");
+        window.location.href = "/";
+      } else {
+        setError(data.error || "Đã có lỗi xảy ra khi đăng ký bằng Google");
+      }
+    } catch (err) {
+      setError("Không thể kết nối với máy chủ xác thực");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (success) {
     return (
@@ -178,6 +242,17 @@ export default function RegisterPage() {
               Đăng ký
             </Button>
           </form>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Hoặc tiếp tục với</span>
+            </div>
+          </div>
+
+          <div ref={googleButtonRef} className="w-full min-h-[44px] flex justify-center" />
 
           <div className="mt-4 text-center text-sm text-muted-foreground">
             Đã có tài khoản?{" "}

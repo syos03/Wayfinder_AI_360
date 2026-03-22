@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Compass, Loader2, Eye, EyeOff } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
+import { useEffect, useRef } from "react"
+import { toast } from "sonner"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -41,6 +43,72 @@ export default function LoginPage() {
       setIsLoading(false)
     }
   }
+
+  const googleButtonRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Initialize Google Identity Services
+    const initializeGoogle = () => {
+      if (typeof window !== "undefined" && (window as any).google) {
+        (window as any).google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          callback: handleGoogleCallback,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        });
+
+        if (googleButtonRef.current) {
+          (window as any).google.accounts.id.renderButton(googleButtonRef.current, {
+            theme: "outline",
+            size: "large",
+            width: "100%",
+            text: "signin_with",
+            shape: "rectangular",
+            logo_alignment: "left",
+          });
+        }
+      }
+    };
+
+    // Check if script is already loaded, otherwise wait for it
+    if ((window as any).google) {
+      initializeGoogle();
+    } else {
+      const interval = setInterval(() => {
+        if ((window as any).google) {
+          initializeGoogle();
+          clearInterval(interval);
+        }
+      }, 500);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  const handleGoogleCallback = async (response: any) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: response.credential }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Đăng nhập bằng Google thành công!");
+        window.location.href = "/";
+      } else {
+        setError(data.error || "Đã có lỗi xảy ra khi đăng nhập bằng Google");
+      }
+    } catch (err) {
+      setError("Không thể kết nối với máy chủ xác thực");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
@@ -105,6 +173,17 @@ export default function LoginPage() {
               Đăng nhập
             </Button>
           </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Hoặc tiếp tục với</span>
+            </div>
+          </div>
+
+          <div ref={googleButtonRef} className="w-full min-h-[44px] flex justify-center" />
 
           <div className="text-center text-sm text-muted-foreground">
             Chưa có tài khoản?{" "}

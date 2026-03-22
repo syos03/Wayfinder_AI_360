@@ -98,6 +98,10 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
+  devIndicators: {
+    buildActivity: false,
+    appIsrStatus: false,
+  },
   // Headers for Permissions Policy (allow sensor features for Google Maps)
   async headers() {
     return [

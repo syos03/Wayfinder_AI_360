@@ -7,7 +7,9 @@ import mongoose, { Schema, Document } from 'mongoose'
 export interface IUser extends Document {
   email: string
   name: string
-  passwordHash: string
+  passwordHash?: string
+  googleId?: string
+  authProvider: 'local' | 'google'
   avatar?: string
   bio?: string
   
@@ -94,7 +96,20 @@ const UserSchema = new Schema<IUser>(
     },
     passwordHash: {
       type: String,
-      required: true,
+      required: function(this: any) {
+        return this.authProvider === 'local';
+      },
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+      default: null,
+    },
+    authProvider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local',
     },
     avatar: {
       type: String,
