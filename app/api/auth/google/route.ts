@@ -10,6 +10,7 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export async function POST(req: NextRequest) {
   try {
+    console.log('Google Auth API - Client ID:', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
     const { credential } = await req.json();
 
     if (!credential) {

@@ -49,7 +49,11 @@ export default function LoginPage() {
   useEffect(() => {
     // Initialize Google Identity Services
     const initializeGoogle = () => {
+      console.log("Checking Google Client ID:", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
       if (typeof window !== "undefined" && (window as any).google) {
+        if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+          console.error("GOOGLE_CLIENT_ID is missing in environment variables!");
+        }
         (window as any).google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
           callback: handleGoogleCallback,
