@@ -113,8 +113,6 @@ export default function LoginPage() {
               Đăng ký ngay
             </Link>
           </div>
-
-          </div>
         </CardContent>
       </Card>
     </div>
