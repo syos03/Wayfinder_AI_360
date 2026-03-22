@@ -64,7 +64,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AnalyticsProvider>
-            <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
             <WebVitals />
             <OfflineIndicator />
             <Toaster position="top-right" richColors closeButton />
