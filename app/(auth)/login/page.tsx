@@ -118,6 +118,10 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
+          {/* EMERGENCY DEBUG BANNER */}
+          <div className="bg-orange-500 text-white text-[10px] p-1 mb-2 rounded font-mono break-all">
+            DEBUG_CLIENT_ID: {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'MISSING_ENV_VAR'}
+          </div>
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
             <Compass className="h-6 w-6 text-primary-foreground" />
           </div>
