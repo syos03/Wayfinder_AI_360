@@ -114,12 +114,6 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          <div className="rounded-lg bg-amber-50 p-3 text-sm">
-            <p className="font-medium text-amber-900">💡 Lưu ý:</p>
-            <p className="text-amber-700">
-              Bạn cần đăng ký tài khoản trước khi đăng nhập. 
-              Dữ liệu được lưu trong trình duyệt của bạn.
-            </p>
           </div>
         </CardContent>
       </Card>
