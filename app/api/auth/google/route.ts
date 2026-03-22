@@ -4,13 +4,17 @@ import { connectDB } from '@/lib/db/mongodb';
 import User from '@/lib/models/User';
 import jwt from 'jsonwebtoken';
 
-const client = new OAuth2Client(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
+);
 const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export async function POST(req: NextRequest) {
   try {
     console.log('Google Auth API - Client ID:', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+    console.log('Google Auth API - Client Secret present:', !!process.env.GOOGLE_CLIENT_SECRET);
     const { credential } = await req.json();
 
     if (!credential) {
