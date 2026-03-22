@@ -56,8 +56,6 @@ export default function RegisterPage() {
     }
   }
 
-  }
-
   if (success) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
