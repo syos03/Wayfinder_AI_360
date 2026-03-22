@@ -189,6 +189,13 @@ export default function LoginPage() {
 
           <div ref={googleButtonRef} className="w-full min-h-[44px] flex justify-center" />
 
+          {/* Temporary Debug Info */}
+          {process.env.NODE_ENV === 'development' || true && (
+            <div className="mt-2 text-[10px] text-muted-foreground break-all opacity-20 hover:opacity-100">
+              Debug ID: {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'NOT_FOUND'}
+            </div>
+          )}
+
           <div className="text-center text-sm text-muted-foreground">
             Chưa có tài khoản?{" "}
             <Link href="/register" className="font-medium text-primary hover:underline">
